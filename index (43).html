@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TSE Group | Communication Co.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #000000; --surface: #0F0F0F; --ink: #F6F1E7; --muted: #A9A18E;
+    --line: #2E2814; --tile: #16130A; --accent: #D4AF37; --accent-soft: #2A2208;
+    --btn-ink: #000000; --focus: #F5D77A; --danger: #FF8A80; --ok: #9FD8A8;
+    --gold-grad: linear-gradient(135deg, #C9A02E, #F0D78A 50%, #C9A02E);
+    --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --font-body: "DM Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  [hidden] { display: none !important; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 1rem; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+  .wrap { width: min(1200px, 100% - 2.5rem); margin-inline: auto; }
+  .view { flex: 1; display: flex; flex-direction: column; }
+
+  header.site { padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+  nav.site-nav { display: flex; gap: 2rem; font-size: .95rem; }
+  nav.site-nav a, .foot-col a { color: var(--muted); text-decoration: none; }
+  nav.site-nav a { padding: .25rem 0; border-bottom: 2px solid transparent; }
+  nav.site-nav a:hover { color: var(--ink); border-bottom-color: var(--accent); }
+  .pill { display: inline-block; font: inherit; font-weight: 600; font-size: .925rem; text-decoration: none; cursor: pointer; border: 0; color: var(--btn-ink); background: var(--gold-grad); border-radius: 999px; padding: .65rem 1.3rem; transition: filter .15s; }
+  .pill:hover { filter: brightness(1.15); }
+  a.wordmark { color: var(--ink); text-decoration: none; }
+  .wordmark { font-family: var(--font-display); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.01em; line-height: 1; }
+  .wordmark em { font-style: italic; font-weight: 500; color: var(--accent); }
+
+  main.hero { flex: 1; display: flex; align-items: center; padding: clamp(1rem, 4vw, 3rem) 0 clamp(2.5rem, 6vw, 5rem); }
+  .grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: clamp(2.5rem, 7vw, 6rem); align-items: center; width: 100%; }
+  h1 { font-family: var(--font-display); font-weight: 500; font-size: clamp(3rem, 7.4vw, 6.5rem); line-height: .98; letter-spacing: -0.025em; margin: 0 0 2.5rem; text-wrap: balance; }
+  h1 em { font-style: italic; font-weight: 500; color: var(--accent); display: block; margin-top: .15em; }
+
+  .tiles { display: grid; grid-template-columns: repeat(8, 1fr); gap: .55rem; max-width: 34rem; }
+  .tile { aspect-ratio: 1.3 / 1; border-radius: 10px; background: var(--tile); position: relative; overflow: hidden; transition: background .5s ease; }
+  .tile::after { content: ""; position: absolute; left: 22%; right: 22%; top: 42%; height: 16%; border-radius: 4px; background: var(--ink); opacity: .2; filter: blur(2px); }
+  .tile.sealing { background: color-mix(in srgb, var(--tile) 65%, var(--ink) 35%); }
+  .tile.you { grid-column: 4 / span 2; grid-row: 1 / span 2; aspect-ratio: auto; background: var(--accent-soft); border: 2px solid var(--accent); display: grid; place-items: center; }
+  .tile.you::after { display: none; }
+  .tile.you svg { width: 1.6rem; height: 1.6rem; color: var(--accent); }
+
+  .login { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: clamp(1.75rem, 3.5vw, 2.75rem); box-shadow: 0 0 0 1px rgba(212,175,55,.12), 0 30px 70px -30px rgba(212,175,55,.28); }
+  .login::before { content: ""; position: absolute; left: 2.75rem; right: 2.75rem; top: -1px; height: 4px; background: linear-gradient(90deg, #A67C1E, #F0D78A 50%, #A67C1E); border-radius: 0 0 4px 4px; }
+  .login h2 { font-family: var(--font-display); font-size: 2.1rem; font-weight: 600; letter-spacing: -0.01em; margin: .25rem 0 1.5rem; line-height: 1.1; }
+  .login h2 em, .portal h2 em { font-style: italic; font-weight: 500; color: var(--accent); }
+  .field { margin-bottom: 1.1rem; }
+  .field label, .label { display: block; font-weight: 600; font-size: .925rem; margin-bottom: .4rem; }
+  .input-wrap { position: relative; }
+  .field input, textarea, .search { width: 100%; font: inherit; color: var(--ink); background: var(--bg); border: 1.5px solid var(--line); border-radius: 10px; padding: .8rem .95rem; min-height: 3rem; transition: border-color .15s; }
+  textarea { min-height: 10rem; resize: vertical; line-height: 1.5; }
+  .field input::placeholder, textarea::placeholder, .search::placeholder { color: var(--muted); opacity: .7; }
+  .field input:hover, textarea:hover, .search:hover { border-color: var(--muted); }
+  .field input:focus-visible, textarea:focus-visible, .search:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; border-color: transparent; }
+  .field input[aria-invalid="true"] { border-color: var(--danger); }
+  .err { color: var(--danger); font-size: .9rem; margin: .35rem 0 0; }
+  .toggle-pw { position: absolute; right: .4rem; top: 50%; transform: translateY(-50%); font: inherit; font-size: .875rem; font-weight: 600; background: none; border: 0; color: var(--muted); cursor: pointer; padding: .5rem .6rem; border-radius: 8px; }
+  .toggle-pw:hover { color: var(--ink); }
+  #password { padding-right: 4.5rem; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin: .25rem 0 1.5rem; font-size: .925rem; }
+  .row label { display: flex; align-items: center; gap: .55rem; cursor: pointer; }
+  input[type="checkbox"] { width: 1.1rem; height: 1.1rem; accent-color: var(--accent); margin: 0; }
+  .link-btn { font: inherit; background: none; border: 0; padding: .25rem 0; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .btn { width: 100%; font: inherit; font-weight: 600; font-size: 1.05rem; background: var(--gold-grad); color: var(--btn-ink); border: 0; border-radius: 999px; padding: .95rem 1.25rem; min-height: 3.25rem; cursor: pointer; transition: filter .15s, transform .12s; }
+  .btn:hover { filter: brightness(1.15); }
+  .btn:active { transform: translateY(1px); }
+  .btn[disabled] { opacity: .7; cursor: progress; }
+  .status { margin: 1rem 0 0; font-size: .925rem; color: var(--muted); min-height: 1.4rem; }
+  .status.error { color: var(--danger); }
+  .status.ok { color: var(--ok); }
+
+  /* portal */
+  .portal { width: min(780px, 100% - 2.5rem); margin: 0 auto; padding: clamp(1.5rem, 4vw, 3rem) 0 4rem; flex: 1; }
+  .portal h2 { font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 600; letter-spacing: -0.015em; line-height: 1.05; margin: 0 0 1.5rem; }
+  .tabs { display: flex; gap: .5rem; border-bottom: 1px solid var(--line); margin-bottom: 1.5rem; }
+  .tab { font: inherit; font-weight: 600; color: var(--muted); background: none; border: 0; border-bottom: 3px solid transparent; padding: .75rem 1rem; cursor: pointer; margin-bottom: -1px; }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+  .count { display: inline-block; min-width: 1.4rem; text-align: center; margin-left: .4rem; padding: 0 .4rem; border-radius: 999px; background: var(--accent); color: var(--btn-ink); font-size: .8rem; }
+  .messages { display: grid; gap: .9rem; }
+  .msg { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1.1rem 1.25rem; }
+  .msg.unread { border-color: var(--accent); box-shadow: inset 4px 0 0 var(--accent); }
+  .msg-top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; color: var(--muted); font-size: .875rem; margin-bottom: .5rem; }
+  .msg-top strong { color: var(--ink); font-weight: 600; }
+  .msg-body { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; }
+  .msg .link-btn { margin-top: .6rem; color: var(--accent); font-size: .9rem; }
+  .empty { color: var(--muted); padding: 2.5rem 0; text-align: center; border: 1px dashed var(--line); border-radius: 14px; }
+  .recips { border: 1.5px solid var(--line); border-radius: 12px; background: var(--bg); margin-bottom: 1.25rem; }
+  .recips .search { border: 0; border-bottom: 1px solid var(--line); border-radius: 12px 12px 0 0; }
+  .recip-list { max-height: 13rem; overflow: auto; padding: .4rem .5rem; }
+  .recip-list label { display: flex; align-items: center; gap: .65rem; padding: .45rem .5rem; border-radius: 8px; cursor: pointer; font-size: .95rem; overflow-wrap: anywhere; }
+  .recip-list label:hover { background: var(--accent-soft); }
+  .recip-tools { display: flex; justify-content: space-between; align-items: center; padding: .5rem 1rem; border-top: 1px solid var(--line); font-size: .9rem; color: var(--muted); }
+  .compose-actions { max-width: 16rem; }
+
+  footer.site { padding: 3rem 0 2rem; color: var(--muted); font-size: .925rem; border-top: 1px solid var(--line); }
+  .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem; }
+  .foot-col h3 { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; color: var(--ink); margin: 0 0 .75rem; }
+  .foot-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+  .foot-col a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  .foot-base { border-top: 1px solid var(--line); padding-top: 1.25rem; }
+
+  @media (max-width: 960px) { nav.site-nav { display: none; } }
+  @media (max-width: 880px) {
+    .grid { grid-template-columns: 1fr; }
+    .login { order: 2; }
+    .tiles { grid-template-columns: repeat(6, 1fr); }
+    .tile.you { grid-column: 3 / span 2; }
+  }
+  @media (max-width: 640px) { .foot-grid { grid-template-columns: 1fr 1fr; } .foot-grid .foot-col:first-child { grid-column: 1 / -1; } }
+  @media (prefers-reduced-motion: reduce) { .tile, .btn, .pill { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<!-- ================= SIGN-IN VIEW ================= -->
+<div class="view" id="viewLogin">
+  <header class="site">
+    <div class="wrap bar">
+      <a class="wordmark" href="https://tsegroup.world/">TSE <em>Group</em></a>
+      <nav class="site-nav" aria-label="TSE Group">
+        <a href="https://tsegroup.world/#mission">Our Mission</a>
+        <a href="https://tsegroup.world/#headquarters">Headquarters</a>
+        <a href="https://tsegroup.world/#impact">The Impact</a>
+        <a href="https://tsegroup.world/#community">Community</a>
+        <a href="https://tsegroup.world/#contact">Contact</a>
+      </nav>
+      <a class="pill" href="https://tsegroup.world/#contact">Get In Touch</a>
+    </div>
+  </header>
+
+  <main class="hero">
+    <div class="wrap grid">
+      <div>
+        <h1>One Portal. One Person. <em>No window into anyone else's.</em></h1>
+        <div class="tiles" id="tiles" aria-hidden="true"></div>
+      </div>
+
+      <div class="login" id="signin">
+        <h2>Communication <em>Co.</em></h2>
+        <form id="loginForm" novalidate>
+          <div class="field">
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="username" placeholder="you@company.com" required aria-describedby="emailErr">
+            <p class="err" id="emailErr" role="alert"></p>
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+              <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required aria-describedby="pwErr">
+              <button type="button" class="toggle-pw" id="togglePw" aria-controls="password" aria-pressed="false">Show</button>
+            </div>
+            <p class="err" id="pwErr" role="alert"></p>
+          </div>
+          <div class="row">
+            <label><input type="checkbox" id="remember" name="remember"> Keep me signed in</label>
+            <button type="button" class="link-btn" id="forgot">Forgot password?</button>
+          </div>
+          <button class="btn" type="submit" id="submitBtn">Sign in</button>
+          <p class="status" id="status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-col"><span class="wordmark">TSE <em>Group</em></span></div>
+        <div class="foot-col">
+          <h3>Explore</h3>
+          <ul>
+            <li><a href="https://tsegroup.world/#mission">Our Mission</a></li>
+            <li><a href="https://tsegroup.world/#headquarters">Headquarters</a></li>
+            <li><a href="https://tsegroup.world/#impact">The Impact</a></li>
+            <li><a href="https://tsegroup.world/#community">Community</a></li>
+            <li><a href="https://tsegroup.world/#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="foot-col">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="https://tsegroup.world/">Privacy Policy</a></li>
+            <li><a href="https://tsegroup.world/">Terms of Service</a></li>
+            <li><a href="https://tsegroup.world/">Intellectual Property</a></li>
+            <li><a href="mailto:hello@tsegroup.world">Email Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-base">© <span id="year">2026</span> TSE Group. All rights reserved.</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ================= PORTAL VIEW ================= -->
+<div class="view" id="viewPortal" hidden>
+  <header class="site">
+    <div class="wrap bar">
+      <span class="wordmark">TSE <em>Group</em></span>
+      <button type="button" class="pill" id="signOut">Sign out</button>
+    </div>
+  </header>
+
+  <div class="portal">
+    <h2>Communication <em>Co.</em></h2>
+
+    <div class="tabs" role="tablist" aria-label="Portal">
+      <button class="tab" role="tab" id="tabInbox" aria-selected="true" aria-controls="panelInbox">Inbox<span class="count" id="unreadCount" hidden>0</span></button>
+      <button class="tab" role="tab" id="tabSend" aria-selected="false" aria-controls="panelSend" hidden>Send a message</button>
+    </div>
+
+    <section id="panelInbox" role="tabpanel" aria-labelledby="tabInbox">
+      <div class="messages" id="messages" aria-live="polite"></div>
+    </section>
+
+    <section id="panelSend" role="tabpanel" aria-labelledby="tabSend" hidden>
+      <span class="label" id="toLabel">Send to</span>
+      <div class="recips" role="group" aria-labelledby="toLabel">
+        <input class="search" id="recipSearch" type="search" placeholder="Search by email address" aria-label="Search recipients">
+        <div class="recip-list" id="recipList"></div>
+        <div class="recip-tools">
+          <span id="recipCount">0 selected</span>
+          <button type="button" class="link-btn" id="selectAll">Select all shown</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="body">Message</label>
+        <textarea id="body" maxlength="5000" placeholder="Write your message"></textarea>
+      </div>
+      <div class="compose-actions"><button class="btn" type="button" id="sendBtn">Send message</button></div>
+      <p class="status" id="sendStatus" role="status" aria-live="polite"></p>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+(function () {
+  // ===== Paste your Supabase project details here (Project Settings > API) =====
+  // The anon key is safe to publish. NEVER put the service_role key in this file.
+  var SUPABASE_URL = "";        // e.g. "https://abcdxyz.supabase.co"
+  var SUPABASE_ANON_KEY = "";   // the "anon" / "public" key
+  // ============================================================================
+
+  var $ = function (id) { return document.getElementById(id); };
+  var sb = null, isStaff = false, pollTimer = null, recipients = [], selected = {};
+  var configured = !!(SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase);
+
+  $("year").textContent = new Date().getFullYear();
+
+  // ----- Storage helpers (fall back to memory if the browser blocks storage)
+  function memoryStore() { var m = {}; return { getItem: function (k) { return k in m ? m[k] : null; }, setItem: function (k, v) { m[k] = v; }, removeItem: function (k) { delete m[k]; } }; }
+  function safeStore(name) { try { var s = window[name]; s.setItem("_t", "1"); s.removeItem("_t"); return s; } catch (e) { return memoryStore(); } }
+  function makeClient(storage) {
+    return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { storage: storage, persistSession: true, autoRefreshToken: true, detectSessionInUrl: false }
+    });
+  }
+
+  // ----- Sign-in form
+  var email = $("email"), pw = $("password"), statusEl = $("status"), btn = $("submitBtn");
+  function setStatus(el, m, kind) { el.textContent = m; el.className = "status" + (kind ? " " + kind : ""); }
+  function setErr(input, el, m) { el.textContent = m; if (m) input.setAttribute("aria-invalid", "true"); else input.removeAttribute("aria-invalid"); }
+
+  $("togglePw").addEventListener("click", function () {
+    var show = pw.type === "password";
+    pw.type = show ? "text" : "password";
+    this.textContent = show ? "Hide" : "Show";
+    this.setAttribute("aria-pressed", String(show));
+  });
+  $("forgot").addEventListener("click", function () {
+    setStatus(statusEl, "To reset your password, contact your TSE Group administrator.", "");
+  });
+
+  $("loginForm").addEventListener("submit", function (e) {
+    e.preventDefault(); setStatus(statusEl, "", "");
+    var ok = true, v = email.value.trim();
+    if (!v) { setErr(email, $("emailErr"), "Enter your email address."); ok = false; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { setErr(email, $("emailErr"), "Enter a valid email address, like name@company.com."); ok = false; }
+    else setErr(email, $("emailErr"), "");
+    if (!pw.value) { setErr(pw, $("pwErr"), "Enter your password."); ok = false; } else setErr(pw, $("pwErr"), "");
+    if (!ok) { ($("emailErr").textContent ? email : pw).focus(); return; }
+    if (!configured) { setStatus(statusEl, "Sign-in isn't connected yet. Add your Supabase URL and key at the top of this file's script.", "error"); return; }
+
+    btn.disabled = true; btn.textContent = "Signing in";
+    var store = safeStore($("remember").checked ? "localStorage" : "sessionStorage");
+    sb = makeClient(store);
+    sb.auth.signInWithPassword({ email: v, password: pw.value }).then(function (res) {
+      if (res.error || !res.data.session) throw new Error("bad");
+      pw.value = "";
+      return openPortal(res.data.session.user);
+    }).catch(function () {
+      sb = null;
+      setStatus(statusEl, "That email and password didn't match. Check them and try again.", "error");
+    }).then(function () { btn.disabled = false; btn.textContent = "Sign in"; });
+  });
+
+  // ----- Portal
+  function show(view) { $("viewLogin").hidden = view !== "login"; $("viewPortal").hidden = view !== "portal"; window.scrollTo(0, 0); }
+
+  function openPortal(user) {
+    return sb.from("profiles").select("role").eq("id", user.id).maybeSingle().then(function (r) {
+      isStaff = !!(r.data && r.data.role === "staff");
+      $("tabSend").hidden = !isStaff;
+      selectTab("inbox");
+      show("portal");
+      sb.auth.onAuthStateChange(function (ev) { if (ev === "SIGNED_OUT") closePortal(); });
+      startPolling();
+      return loadMessages();
+    });
+  }
+  function closePortal() {
+    clearInterval(pollTimer); sb = null; isStaff = false; recipients = []; selected = {};
+    $("messages").textContent = ""; $("body").value = ""; setStatus($("sendStatus"), "", "");
+    show("login");
+  }
+  $("signOut").addEventListener("click", function () { if (sb) sb.auth.signOut().then(closePortal); else closePortal(); });
+
+  function selectTab(which) {
+    var inbox = which === "inbox";
+    $("tabInbox").setAttribute("aria-selected", String(inbox));
+    $("tabSend").setAttribute("aria-selected", String(!inbox));
+    $("panelInbox").hidden = !inbox; $("panelSend").hidden = inbox;
+    if (!inbox && !recipients.length) loadRecipients();
+  }
+  $("tabInbox").addEventListener("click", function () { selectTab("inbox"); });
+  $("tabSend").addEventListener("click", function () { selectTab("send"); });
+
+  function startPolling() {
+    clearInterval(pollTimer);
+    pollTimer = setInterval(function () { if (sb && !document.hidden) loadMessages(); }, 30000);
+  }
+
+  function loadMessages() {
+    if (!sb) return Promise.resolve();
+    // Row-level security returns only messages addressed to the signed-in person.
+    return sb.from("messages").select("id, body, created_at, read_at").order("created_at", { ascending: false }).limit(200).then(function (r) {
+      if (r.error) { if (r.error.code === "PGRST301" || /JWT/i.test(r.error.message)) closePortal(); return; }
+      renderMessages(r.data || []);
+    });
+  }
+
+  function renderMessages(rows) {
+    var box = $("messages"), unread = 0;
+    box.textContent = "";
+    if (!rows.length) {
+      var empty = document.createElement("p"); empty.className = "empty"; empty.textContent = "No messages yet.";
+      box.appendChild(empty);
+    }
+    rows.forEach(function (m) {
+      var isNew = !m.read_at; if (isNew) unread++;
+      var card = document.createElement("article"); card.className = "msg" + (isNew ? " unread" : "");
+      var top = document.createElement("div"); top.className = "msg-top";
+      var from = document.createElement("strong"); from.textContent = "TSE Group";
+      var when = document.createElement("time"); when.dateTime = m.created_at; when.textContent = new Date(m.created_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
+      top.appendChild(from); top.appendChild(when);
+      var body = document.createElement("p"); body.className = "msg-body"; body.textContent = m.body; // textContent: never interpreted as HTML
+      card.appendChild(top); card.appendChild(body);
+      if (isNew) {
+        var b = document.createElement("button"); b.type = "button"; b.className = "link-btn"; b.textContent = "Mark as read";
+        b.addEventListener("click", function () {
+          b.disabled = true;
+          sb.rpc("mark_read", { message_id: m.id }).then(function () { return loadMessages(); });
+        });
+        card.appendChild(b);
+      }
+      box.appendChild(card);
+    });
+    var c = $("unreadCount"); c.textContent = unread; c.hidden = unread === 0;
+  }
+
+  // ----- Staff: send a message
+  function loadRecipients() {
+    sb.rpc("staff_list_recipients").then(function (r) {
+      if (r.error) { setStatus($("sendStatus"), "Couldn't load recipients. Try again.", "error"); return; }
+      recipients = r.data || []; renderRecipients();
+    });
+  }
+  function shownRecipients() {
+    var q = $("recipSearch").value.trim().toLowerCase();
+    return recipients.filter(function (p) { return !q || p.email.toLowerCase().indexOf(q) !== -1; });
+  }
+  function updateCount() { var n = Object.keys(selected).length; $("recipCount").textContent = n + " selected"; }
+  function renderRecipients() {
+    var list = $("recipList"); list.textContent = "";
+    var rows = shownRecipients();
+    if (!rows.length) { var p = document.createElement("p"); p.className = "empty"; p.style.border = "0"; p.textContent = recipients.length ? "No matches." : "No accounts yet."; list.appendChild(p); }
+    rows.forEach(function (p) {
+      var l = document.createElement("label");
+      var cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = !!selected[p.id];
+      cb.addEventListener("change", function () { if (cb.checked) selected[p.id] = true; else delete selected[p.id]; updateCount(); });
+      var t = document.createElement("span"); t.textContent = p.email;
+      l.appendChild(cb); l.appendChild(t); list.appendChild(l);
+    });
+    updateCount();
+  }
+  $("recipSearch").addEventListener("input", renderRecipients);
+  $("selectAll").addEventListener("click", function () { shownRecipients().forEach(function (p) { selected[p.id] = true; }); renderRecipients(); });
+
+  $("sendBtn").addEventListener("click", function () {
+    var ids = Object.keys(selected), text = $("body").value.trim(), st = $("sendStatus");
+    if (!ids.length) { setStatus(st, "Choose at least one person to send to.", "error"); return; }
+    if (!text) { setStatus(st, "Write a message before sending.", "error"); return; }
+    var b = this; b.disabled = true; b.textContent = "Sending"; setStatus(st, "", "");
+    sb.rpc("send_message", { recipients: ids, message: text }).then(function (r) {
+      if (r.error) throw r.error;
+      var n = r.data;
+      setStatus(st, "Sent to " + n + (n === 1 ? " person." : " people.") + " Each person received their own private copy.", "ok");
+      $("body").value = ""; selected = {}; renderRecipients();
+    }).catch(function () {
+      setStatus(st, "The message wasn't sent. Check your connection and try again.", "error");
+    }).then(function () { b.disabled = false; b.textContent = "Send message"; });
+  });
+
+  // ----- Restore an existing session on page load
+  if (configured) {
+    (function restore(names) {
+      if (!names.length) return;
+      var c = makeClient(safeStore(names[0]));
+      c.auth.getSession().then(function (r) {
+        if (r.data && r.data.session) { sb = c; return openPortal(r.data.session.user); }
+        restore(names.slice(1));
+      });
+    })(["localStorage", "sessionStorage"]);
+  }
+
+  // ----- Wordless sealed-portal tiles (one ripple on load)
+  var tilesEl = $("tiles");
+  var lock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>';
+  var mq = window.matchMedia("(max-width: 880px)");
+  function build() {
+    var cols = mq.matches ? 6 : 8, youCol = mq.matches ? 3 : 4;
+    tilesEl.innerHTML = "";
+    var y = document.createElement("div"); y.className = "tile you"; y.innerHTML = lock; tilesEl.appendChild(y);
+    for (var r = 1; r <= 2; r++) for (var c = 1; c <= cols; c++) {
+      if (c === youCol || c === youCol + 1) continue;
+      var t = document.createElement("div"); t.className = "tile";
+      t.style.gridColumn = c; t.style.gridRow = r;
+      t.dataset.d = Math.abs(c - (youCol + .5)) + Math.abs(r - 1.5);
+      tilesEl.appendChild(t);
+    }
+  }
+  build(); if (mq.addEventListener) mq.addEventListener("change", build);
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    tilesEl.querySelectorAll(".tile:not(.you)").forEach(function (t) {
+      setTimeout(function () { t.classList.add("sealing"); setTimeout(function () { t.classList.remove("sealing"); }, 450); }, 400 + parseFloat(t.dataset.d) * 130);
+    });
+  }
+})();
+</script>
+</body>
+</html>
