@@ -353,7 +353,38 @@ function renderRecipients(){const box=$('recipList');box.replaceChildren();const
 $('recipSearch').oninput=renderRecipients;$('selectAll').onclick=()=>{shownRecipients().forEach(p=>selected.add(p.id));deliveryId=null;renderRecipients();};$('clearSelected').onclick=()=>{selected.clear();deliveryId=null;renderRecipients();};$('body').oninput=()=>{deliveryId=null;$('charCount').textContent=$('body').value.length+' / 5000 characters';};
 $('sendBtn').onclick=async()=>{const text=$('body').value.trim(),ids=[...selected];if(!text||ids.length<1||ids.length>1000)return status('sendStatus','Write a message and choose 1–1000 authorized recipients.','error');if(!confirm('Send this message to '+ids.length+' authorized recipient(s)?'))return;const v=version,b=$('sendBtn');b.disabled=true;try{deliveryId=deliveryId||uuid();const {data,error}=await sb.rpc('send_message',{recipients:ids,message:text,request_id:deliveryId});if(error)throw error;if(v!==version)return;status('sendStatus','Delivered '+data+' private message copies.','ok');$('body').value='';$('charCount').textContent='0 / 5000 characters';selected.clear();deliveryId=null;renderRecipients();}catch{if(v===version)status('sendStatus','Delivery could not be confirmed. Retry without editing to safely reuse this request.','error');}finally{b.disabled=false;}};
 async function admin(action,args={}){const {data,error}=await sb.functions.invoke('admin-users',{body:{action,...args}});if(error){let msg='Administration request failed. Verify the deployed function and allowed origin.';try{const body=await error.context.json();msg=body.error||msg;}catch{}throw Error(msg);}if(data?.error)throw Error(data.error);return data;}
-async function loadPeople(){const v=version;status('adminStatus','Loading personnel…');try{const data=await admin('list');if(v!==version)return;people=data.users||[];renderPeople();status('adminStatus','Personnel list loaded.');}catch(e){if(v===version)status('adminStatus',e.message,'error');}}
+async function loadPeople() {
+  const v = version;
+  status('adminStatus', 'Loading personnel…');
+
+  try {
+    const collected = [];
+    let page = 1;
+
+    while (page !== null) {
+      if (page > 100) {
+        throw Error(
+          'Personnel list exceeds 10,000 entries; a page-navigation UI is required.'
+        );
+      }
+
+      const data = await admin('list', { page, perPage: 100 });
+
+      if (v !== version) return;
+
+      collected.push(...(data.users || []));
+      page = data.next_page ?? null;
+    }
+
+    people = collected;
+    renderPeople();
+    status('adminStatus', 'Personnel list loaded.');
+  } catch (e) {
+    if (v === version) {
+      status('adminStatus', e.message, 'error');
+    }
+  }
+}
 function renderPeople(){const box=$('userList'),q=$('userSearch').value.trim().toLowerCase();box.replaceChildren();for(const p of people.filter(p=>(p.email||'').toLowerCase().includes(q))){const card=node('article',undefined,'msg'),tools=node('div',undefined,'user-tools'),select=node('select');select.setAttribute('aria-label','Role for '+p.email);for(const r of ['member','staff','admin']){const o=node('option',r==='member'?'Personnel':r);o.value=r;select.append(o);}select.value=p.role;const self=p.id===user.id;select.disabled=self;const save=node('button','Save role','pill');save.type='button';save.disabled=self;save.onclick=()=>changePerson(save,'role',{id:p.id,role:select.value},'Change '+p.email+' to '+select.value+'?');const approve=node('button',p.approved?'Revoke approval':'Approve access','link-btn');approve.type='button';approve.disabled=self;approve.onclick=()=>changePerson(approve,'approve',{id:p.id,approved:!p.approved},(p.approved?'Revoke':'Approve')+' access for '+p.email+'?');const suspend=node('button',p.suspended?'Restore access':'Suspend access','link-btn');suspend.type='button';suspend.disabled=self;suspend.onclick=()=>changePerson(suspend,'suspend',{id:p.id,suspended:!p.suspended},(p.suspended?'Restore':'Suspend')+' access for '+p.email+'?');const reset=node('button','Password reset email','link-btn');reset.type='button';reset.onclick=async()=>{if(!confirm('Request a reset email for '+p.email+'?'))return;reset.disabled=true;try{const {error}=await sb.auth.resetPasswordForEmail(p.email,{redirectTo:destination()});if(error)throw error;status('adminStatus','Password reset requested.','ok');}catch{status('adminStatus','Reset email could not be sent. Check SMTP and rate limits.','error');}finally{reset.disabled=false;}};card.append(node('p',p.email+' · '+(p.approved?'approved':'not approved')+(p.suspended?' · suspended':'')));tools.append(select,save,approve,suspend,reset);card.append(tools);box.append(card);}if(!box.children.length)box.append(node('p','No matching personnel.','empty'));}
 async function changePerson(button,action,args,question){if(!confirm(question))return;button.disabled=true;try{await admin(action,args);await loadPeople();status('adminStatus','Access settings updated.','ok');}catch(e){status('adminStatus',e.message,'error');}finally{button.disabled=false;}}
 $('refreshUsers').onclick=loadPeople;$('userSearch').oninput=renderPeople;
