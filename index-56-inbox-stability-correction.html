@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<title>Authorized Personnel Only | TSEGroup CGL Communication Co.</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&amp;family=DM+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #000000; --surface: #0F0F0F; --ink: #F6F1E7; --muted: #A9A18E;
+    --line: #2E2814; --tile: #16130A; --accent: #D4AF37; --accent-soft: #2A2208;
+    --btn-ink: #000000; --focus: #F5D77A; --danger: #FF8A80; --ok: #9FD8A8;
+    --gold-grad: linear-gradient(135deg, #C9A02E, #F0D78A 50%, #C9A02E);
+    --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --font-body: "DM Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  [hidden] { display: none !important; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 1rem; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+  .wrap { width: min(1200px, 100% - 2.5rem); margin-inline: auto; }
+  .view { flex: 1; display: flex; flex-direction: column; }
+
+  header.site { padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+  nav.site-nav { display: flex; gap: 2rem; font-size: .95rem; }
+  nav.site-nav a, .foot-col a { color: var(--muted); text-decoration: none; }
+  nav.site-nav a { padding: .25rem 0; border-bottom: 2px solid transparent; }
+  nav.site-nav a:hover { color: var(--ink); border-bottom-color: var(--accent); }
+  .pill { display: inline-block; font: inherit; font-weight: 600; font-size: .925rem; text-decoration: none; cursor: pointer; border: 0; color: var(--btn-ink); background: var(--gold-grad); border-radius: 999px; padding: .65rem 1.3rem; transition: filter .15s; }
+  .pill:hover { filter: brightness(1.15); }
+  a.wordmark { color: var(--ink); text-decoration: none; }
+  .wordmark { font-family: var(--font-display); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.01em; line-height: 1; }
+  .wordmark em { font-style: italic; font-weight: 500; color: var(--accent); }
+
+  main.hero { flex: 1; display: flex; align-items: center; padding: clamp(1rem, 4vw, 3rem) 0 clamp(2.5rem, 6vw, 5rem); }
+  .grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: clamp(2.5rem, 7vw, 6rem); align-items: center; width: 100%; }
+  h1 { font-family: var(--font-display); font-weight: 500; font-size: clamp(3rem, 7.4vw, 6.5rem); line-height: .98; letter-spacing: -0.025em; margin: 0 0 2.5rem; text-wrap: balance; }
+  h1 em { font-style: italic; font-weight: 500; color: var(--accent); display: block; margin-top: .15em; }
+
+  .tiles { display: grid; grid-template-columns: repeat(8, 1fr); gap: .55rem; max-width: 34rem; }
+  .tile { aspect-ratio: 1.3 / 1; border-radius: 10px; background: var(--tile); position: relative; overflow: hidden; transition: background .5s ease; }
+  .tile::after { content: ""; position: absolute; left: 22%; right: 22%; top: 42%; height: 16%; border-radius: 4px; background: var(--ink); opacity: .2; filter: blur(2px); }
+  .tile.sealing { background: color-mix(in srgb, var(--tile) 65%, var(--ink) 35%); }
+  .tile.you { grid-column: 4 / span 2; grid-row: 1 / span 2; aspect-ratio: auto; background: var(--accent-soft); border: 2px solid var(--accent); display: grid; place-items: center; }
+  .tile.you::after { display: none; }
+  .tile.you svg { width: 1.6rem; height: 1.6rem; color: var(--accent); }
+
+  .login { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: clamp(1.75rem, 3.5vw, 2.75rem); box-shadow: 0 0 0 1px rgba(212,175,55,.12), 0 30px 70px -30px rgba(212,175,55,.28); }
+  .login::before { content: ""; position: absolute; left: 2.75rem; right: 2.75rem; top: -1px; height: 4px; background: linear-gradient(90deg, #A67C1E, #F0D78A 50%, #A67C1E); border-radius: 0 0 4px 4px; }
+  .login h2 { font-family: var(--font-display); font-size: 2.1rem; font-weight: 600; letter-spacing: -0.01em; margin: .25rem 0 1.5rem; line-height: 1.1; }
+  .login h2 em, .portal h2 em { font-style: italic; font-weight: 500; color: var(--accent); }
+  .field { margin-bottom: 1.1rem; }
+  .field label, .label { display: block; font-weight: 600; font-size: .925rem; margin-bottom: .4rem; }
+  .input-wrap { position: relative; }
+  .field input, textarea, .search { width: 100%; font: inherit; color: var(--ink); background: var(--bg); border: 1.5px solid var(--line); border-radius: 10px; padding: .8rem .95rem; min-height: 3rem; transition: border-color .15s; }
+  textarea { min-height: 10rem; resize: vertical; line-height: 1.5; }
+  .field input::placeholder, textarea::placeholder, .search::placeholder { color: var(--muted); opacity: .7; }
+  .field input:hover, textarea:hover, .search:hover { border-color: var(--muted); }
+  .field input:focus-visible, textarea:focus-visible, .search:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; border-color: transparent; }
+  .field input[aria-invalid="true"] { border-color: var(--danger); }
+  .err { color: var(--danger); font-size: .9rem; margin: .35rem 0 0; }
+  .toggle-pw { position: absolute; right: .4rem; top: 50%; transform: translateY(-50%); font: inherit; font-size: .875rem; font-weight: 600; background: none; border: 0; color: var(--muted); cursor: pointer; padding: .5rem .6rem; border-radius: 8px; }
+  .toggle-pw:hover { color: var(--ink); }
+  #password { padding-right: 4.5rem; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin: .25rem 0 1.5rem; font-size: .925rem; }
+  .row label { display: flex; align-items: center; gap: .55rem; cursor: pointer; }
+  input[type="checkbox"] { width: 1.1rem; height: 1.1rem; accent-color: var(--accent); margin: 0; }
+  .link-btn { font: inherit; background: none; border: 0; padding: .25rem 0; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .btn { width: 100%; font: inherit; font-weight: 600; font-size: 1.05rem; background: var(--gold-grad); color: var(--btn-ink); border: 0; border-radius: 999px; padding: .95rem 1.25rem; min-height: 3.25rem; cursor: pointer; transition: filter .15s, transform .12s; }
+  .btn:hover { filter: brightness(1.15); }
+  .btn:active { transform: translateY(1px); }
+  .btn[disabled] { opacity: .7; cursor: progress; }
+  .status { margin: 1rem 0 0; font-size: .925rem; color: var(--muted); min-height: 1.4rem; }
+  .status.error { color: var(--danger); }
+  .status.ok { color: var(--ok); }
+
+  /* portal */
+  .portal { width: min(780px, 100% - 2.5rem); margin: 0 auto; padding: clamp(1.5rem, 4vw, 3rem) 0 4rem; flex: 1; }
+  .portal h2 { font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 600; letter-spacing: -0.015em; line-height: 1.05; margin: 0 0 1.5rem; }
+  .tabs { display: flex; gap: .5rem; border-bottom: 1px solid var(--line); margin-bottom: 1.5rem; }
+  .tab { font: inherit; font-weight: 600; color: var(--muted); background: none; border: 0; border-bottom: 3px solid transparent; padding: .75rem 1rem; cursor: pointer; margin-bottom: -1px; }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+  .count { display: inline-block; min-width: 1.4rem; text-align: center; margin-left: .4rem; padding: 0 .4rem; border-radius: 999px; background: var(--accent); color: var(--btn-ink); font-size: .8rem; }
+  .messages { display: grid; gap: .9rem; }
+  .msg { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1.1rem 1.25rem; }
+  .msg.unread { border-color: var(--accent); box-shadow: inset 4px 0 0 var(--accent); }
+  .msg-top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; color: var(--muted); font-size: .875rem; margin-bottom: .5rem; }
+  .msg-top strong { color: var(--ink); font-weight: 600; }
+  .msg-body { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; }
+  .msg .link-btn { margin-top: .6rem; color: var(--accent); font-size: .9rem; }
+  .empty { color: var(--muted); padding: 2.5rem 0; text-align: center; border: 1px dashed var(--line); border-radius: 14px; }
+  .recips { border: 1.5px solid var(--line); border-radius: 12px; background: var(--bg); margin-bottom: 1.25rem; }
+  .recips .search { border: 0; border-bottom: 1px solid var(--line); border-radius: 12px 12px 0 0; }
+  .recip-list { max-height: 13rem; overflow: auto; padding: .4rem .5rem; }
+  .recip-list label { display: flex; align-items: center; gap: .65rem; padding: .45rem .5rem; border-radius: 8px; cursor: pointer; font-size: .95rem; overflow-wrap: anywhere; }
+  .recip-list label:hover { background: var(--accent-soft); }
+  .recip-tools { display: flex; justify-content: space-between; align-items: center; padding: .5rem 1rem; border-top: 1px solid var(--line); font-size: .9rem; color: var(--muted); }
+  .compose-actions { max-width: 16rem; }
+
+  footer.site { padding: 3rem 0 2rem; color: var(--muted); font-size: .925rem; border-top: 1px solid var(--line); }
+  .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem; }
+  .foot-col h3 { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; color: var(--ink); margin: 0 0 .75rem; }
+  .foot-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+  .foot-col a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  .foot-base { border-top: 1px solid var(--line); padding-top: 1.25rem; }
+
+  @media (max-width: 960px) { nav.site-nav { display: none; } }
+  @media (max-width: 880px) {
+    .grid { grid-template-columns: 1fr; }
+    .login { order: 2; }
+    .tiles { grid-template-columns: repeat(6, 1fr); }
+    .tile.you { grid-column: 3 / span 2; }
+  }
+  @media (max-width: 640px) { .foot-grid { grid-template-columns: 1fr 1fr; } .foot-grid .foot-col:first-child { grid-column: 1 / -1; } }
+  @media (prefers-reduced-motion: reduce) { .tile, .btn, .pill { transition: none !important; } }
+
+.access-notice {color:var(--muted);font-size:.95rem;margin-bottom:1.5rem}
+.tabs {flex-wrap:wrap} select {font:inherit;background:var(--surface);color:var(--ink);border:1px solid var(--line);padding:.7rem;border-radius:8px;max-width:100%}
+dialog {width:min(580px,95vw);max-height:90vh;overflow:auto;padding:1.6rem;background:var(--surface);color:var(--ink);border:1px solid var(--accent);border-radius:16px}dialog::backdrop {background:#000b}
+.user-tools {display:flex;align-items:center;gap:.75rem;flex-wrap:wrap} .msg-top {flex-wrap:wrap} .small {font-size:.85rem;color:var(--muted)}
+@media(max-width:480px){.bar{gap:.5rem}.wordmark{font-size:1.5rem}.pill{padding:.65rem .85rem}.row{flex-wrap:wrap}}
+
+:root{--page-gutter:clamp(1.5rem,5vw,5rem)}body{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.wrap{width:calc(100% - var(--page-gutter) - var(--page-gutter));max-width:1200px;margin-inline:auto}
+.portal{width:calc(100% - var(--page-gutter) - var(--page-gutter));max-width:780px;margin-inline:auto;padding-block:clamp(2rem,5vw,4rem) clamp(3rem,7vw,6rem)}
+header.site{padding-block:clamp(1.5rem,3vw,2.25rem)}main.hero{padding-block:clamp(2.25rem,5vw,4.5rem) clamp(3rem,7vw,6rem)}footer.site{padding-block:clamp(2.5rem,5vw,4rem) 2rem}
+.grid>*,.signin-stack,.bar>*,.foot-col{min-width:0}.signin-stack{display:grid;gap:1.75rem}.admin-login{border-color:var(--accent)}.admin-badge{display:inline-block;color:var(--accent);font-size:.75rem;font-weight:600;letter-spacing:.12em;margin-bottom:.75rem}#adminPassword{padding-right:4.5rem}
+.login{padding:clamp(1.25rem,3vw,2.75rem)}.access-notice,.status,.foot-col,#accountEmail{overflow-wrap:anywhere}.bar{flex-wrap:wrap}.wordmark{overflow-wrap:anywhere}.portal h2{overflow-wrap:anywhere}
+dialog{width:calc(100% - var(--page-gutter) - var(--page-gutter));max-width:580px}
+.status:empty{display:none}
+@media(max-width:880px){.signin-stack{order:2}.grid{gap:2.5rem}}
+@media(max-width:480px){:root{--page-gutter:1.5rem}.grid{gap:2rem}h1{font-size:clamp(2.2rem,10vw,3rem);margin-bottom:1.5rem}.login h2{font-size:clamp(1.6rem,7.5vw,2.1rem);overflow-wrap:anywhere}.row{flex-wrap:wrap;gap:.75rem}.row label{flex-wrap:wrap}.tabs{gap:.25rem}.tab{padding:.65rem .6rem}.foot-grid{grid-template-columns:1fr;gap:1.75rem}.foot-grid .foot-col:first-child{grid-column:auto}.recip-tools{flex-wrap:wrap;gap:.5rem}.msg{padding:1rem}.portal h2{font-size:clamp(1.8rem,8vw,2.2rem)}.btn{white-space:normal;overflow-wrap:anywhere}}
+
+.portal-welcome { margin-bottom: 1.5rem; }
+.portal-welcome h3 { margin-top: 0; }
+.portal-welcome p, .portal-confidentiality p { line-height: 1.65; }
+.portal-confidentiality { border-top: 1px solid currentColor; margin-top: 1.25rem; padding-top: .75rem; }
+.message-confidentiality { border-top: 1px solid currentColor; margin-top: 1rem; padding-top: .75rem; font-size: .85rem; line-height: 1.6; }
+.message-confidentiality p { margin: .35rem 0 0; }
+
+
+.portal { max-width: 1500px; }
+.portal-list { width: 100%; border-collapse: collapse; text-align: left; font-size: .9rem; }
+.portal-list th, .portal-list td { padding: .75rem; vertical-align: top; border-bottom: 1px solid currentColor; }
+.portal-list th { font-weight: 600; }
+.portal-list td p { margin: 0 0 .5rem; }
+.portal-list td small { display: block; margin: .5rem 0; line-height: 1.5; }
+.portal-list td input[type=text], .portal-list td input[type=search], .portal-list td select { max-width: 220px; width: 100%; padding: .4rem; }
+.portal-list td label { display: block; margin: .35rem 0; }
+.portal-list td button { display: block; margin-top: .45rem; }
+#userList, #recipList { overflow-x: auto; }
+#recipList { max-height: 650px; }
+#userList .portal-list { min-width: 1150px; }
+.contact-options { max-height: 250px; overflow-y: auto; min-width: 220px; }
+#messageCeo { margin-bottom: .7rem; }
+
+/* Welcome-and-access reviewed interface, 14 October 2026. */
+#viewPortal { background: radial-gradient(ellipse at top left, #201b0c 0, #080a0d 48%, #07090c 100%); }
+#viewPortal .portal { width: min(1500px, calc(100% - 3rem)); max-width: 1500px; padding-top: 2rem; }
+.workspace-kicker,.eyebrow { color: #dec47c; text-transform: uppercase; letter-spacing: .14em; font-size: .75rem; font-weight: 700; margin: 0 0 .6rem; }
+#viewPortal .portal h2 { margin-bottom: 1.4rem; font-size: clamp(2rem,4vw,3.6rem); }
+.welcome-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; align-items: stretch; margin-bottom: 1.75rem; }
+.portal-welcome,.portal-confidentiality { display: block!important; visibility: visible!important; margin: 0; border: 1px solid #51452a; border-radius: 20px; padding: clamp(1.15rem,2vw,1.8rem); }
+.portal-welcome { background: linear-gradient(145deg,#242013,#111419 75%); }
+.portal-confidentiality { background: #11151b; border-top: 3px solid #d4af37; }
+.portal-welcome h3,.portal-confidentiality h4 { font-family: var(--font-display); font-size: 1.8rem; line-height: 1.15; color: #f3e6c2; margin: 0 0 1rem; }
+.portal-welcome p,.portal-confidentiality p { font-size: .94rem; line-height: 1.7; color: #dfded8; margin: 0 0 .9rem; }
+.portal-welcome p:last-child,.portal-confidentiality p:last-child { margin-bottom: 0; }
+.portal-welcome .eyebrow { color: #dec47c; font-size: .73rem; }
+.portal-workspace { display: grid; grid-template-columns: 205px minmax(0,1fr); gap: 1.25rem; align-items: start; }
+.portal-workspace .tabs { display: flex; flex-direction: column; padding: .6rem; margin: 0; gap: .4rem; border: 1px solid #34332e; border-radius: 16px; background: #10141a; position: sticky; top: 1rem; }
+.portal-workspace .tab { text-align: left; border: 1px solid transparent; border-radius: 10px; padding: .95rem .85rem; margin: 0; color: #c3c4c5; }
+.portal-workspace .tab[aria-selected=true] { border-color: #66532a; background: #292311; color: #f4d88a; }
+.portal-workspace .tab:disabled { opacity: .45; cursor: not-allowed; }
+.workspace-content { min-width: 0; border: 1px solid #34332e; border-radius: 20px; background: #0e1218; padding: clamp(1rem,2vw,1.7rem); }
+.panel-title { font-family: var(--font-display); font-size: 2rem; line-height: 1.2; color: #eee8da; margin: 0 0 1.1rem; }
+.workspace-content .msg { border: 1px solid #373a3e; border-radius: 16px; padding: 1.4rem; background: #151a22; }
+.workspace-content .msg.unread { border-color: #9a7c32; box-shadow: inset 4px 0 #d4af37; }
+.msg-top strong { color: #f3dfaa; font-size: 1rem; }
+.msg-body { line-height: 1.8; padding: .5rem 0; }
+.message-confidentiality { border-top: 1px solid #464239; color: #b9bec6; margin-top: 1rem; padding-top: .9rem; font-size: .8rem; line-height: 1.65; }
+.message-confidentiality strong { color: #d5be85; font-weight: 600; }
+.workspace-content .recips { border-color: #3b414a; background: #10151d; padding: 1rem; }
+.workspace-content .search,.workspace-content input,.workspace-content textarea,.workspace-content select { color: #edece8; background: #0a0e14; border-color: #454b55; }
+.workspace-content .recips .search { border: 1px solid #454b55; border-radius: 9px; margin-bottom: .8rem; }
+#recipList { padding: 0; max-height: 520px; }
+#userList { display: block; max-height: 700px; overflow: auto; border: 1px solid #343c47; border-radius: 12px; }
+.portal-list { border-collapse: separate; border-spacing: 0; font-size: .87rem; }
+.portal-list thead th { position: sticky; top: 0; z-index: 1; color: #e1c887; background: #1d222b; font-size: .74rem; letter-spacing: .05em; text-transform: uppercase; }
+.portal-list th,.portal-list td { border-bottom: 1px solid #333a44; padding: .9rem .75rem; }
+.portal-list tbody tr:nth-child(even) { background: #151a22; }
+.portal-list tbody tr:hover { background: #222821; }
+.portal-list td small { color: #b1b7c1; }
+#userList .portal-list { min-width: 1000px; }
+.portal-list details summary { cursor: pointer; color: #e2c779; line-height: 1.5; }
+.portal-list details[open] { min-width: 170px; }
+.portal-list details[open] summary { margin-bottom: .75rem; }
+.portal-list label input[type=checkbox] { margin-right: .4rem; accent-color: #d4af37; }
+.contact-options { background: #11161e; padding: .6rem; border: 1px solid #454b55; border-radius: 8px; }
+.browser-recovery { width: min(600px,calc(100% - 2.5rem)); margin: 1rem auto 2rem; padding: 1rem 1.2rem; background: #141820; border: 1px solid #41464c; border-radius: 12px; text-align: center; }
+.browser-recovery p { margin: 0 0 .3rem; }
+.browser-recovery small { display: block; color: #b3b8c2; margin-top: .5rem; }
+.portal-build { text-align: center; font-size: .75rem; color: #aeb4bd; margin: 0 1rem 1.5rem; }
+@media(max-width:1050px){ .portal-workspace { grid-template-columns: 1fr; }.portal-workspace .tabs { position: static; flex-direction: row; flex-wrap: wrap; }.portal-workspace .tab { flex: 1 1 auto; text-align: center; } }
+@media(max-width:760px){ #viewPortal .portal { width: calc(100% - 1.25rem); }.welcome-layout { grid-template-columns: 1fr; }.workspace-content { padding: .9rem; border-radius: 14px; }.msg-top { align-items: flex-start; flex-direction: column; gap: .3rem; }.portal-list { min-width: 580px; }.portal-confidentiality h4,.portal-welcome h3 { font-size: 1.55rem; } }
+@media(prefers-reduced-motion:reduce){ * { scroll-behavior: auto!important; } }
+
+
+.quick-start{border:1px solid var(--line);border-radius:14px;background:var(--tile);padding:1rem 1.15rem;margin-bottom:1rem}.quick-start strong{color:var(--accent)}.quick-start p{margin:.35rem 0 0;color:var(--muted)}
+.attachments{margin-top:1rem;border:1px solid var(--line);border-radius:12px;padding:1rem;background:var(--bg)}.attachments input[type=file]{width:100%;color:var(--muted)}
+.attachment-list{display:grid;gap:.5rem;margin-top:.75rem}.attachment-item{display:flex;justify-content:space-between;align-items:center;gap:.75rem;border:1px solid var(--line);border-radius:10px;padding:.55rem .7rem;background:var(--surface);overflow-wrap:anywhere}.attachment-item span{min-width:0}
+.message-actions{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem}.danger-link{color:var(--danger)}
+.temp-password{margin-top:1rem;border:1px solid var(--accent);border-radius:12px;padding:1rem;background:var(--accent-soft)}.temp-password .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1.1rem;word-break:break-all}.temp-password .small{color:var(--muted);margin-top:.5rem}
+
+</style>
+</head>
+<body>
+<script id="formSafetyGuard">
+(function () {
+  // Independent safeguard: no native form submission, even if the app fails to load.
+  document.addEventListener("submit", function (event) {
+    if (event.target && event.target.tagName === "FORM") event.preventDefault();
+  }, true);
+  // Remove credential fields from an old query string without disturbing recovery tokens.
+  try {
+    var url = new URL(window.location.href);
+    var changed = url.searchParams.has("email") || url.searchParams.has("password");
+    url.searchParams.delete("email");
+    url.searchParams.delete("password");
+    if (changed) window.history.replaceState(null, "", url.pathname + url.search + url.hash);
+  } catch (error) { /* No credentials or tokens are logged. */ }
+})();
+</script>
+<!-- ================= SIGN-IN VIEW ================= -->
+<div class="view" id="viewLogin">
+<header class="site">
+<div class="wrap bar">
+<a class="wordmark" href="https://tsegroup.world/">TSEGroup <em>CGL</em></a>
+<nav aria-label="TSEGroup CGL" class="site-nav">
+<a href="https://tsegroup.world/#mission">Our Mission</a>
+<a href="https://tsegroup.world/#headquarters">Headquarters</a>
+<a href="https://tsegroup.world/#impact">The Impact</a>
+<a href="https://tsegroup.world/#community">Community</a>
+<a href="https://tsegroup.world/#contact">Contact</a>
+</nav>
+<a class="pill" href="https://tsegroup.world/#contact">Get In Touch</a>
+</div>
+</header>
+<main class="hero">
+<div class="wrap grid">
+<div>
+<h1>Authorized Personnel <em>Only.</em></h1><p class="access-notice">Restricted TSEGroup CGL access. Accounts must be created and approved by an administrator. Each authorized person sees only their own messages.</p>
+<div aria-hidden="true" class="tiles" id="tiles"></div>
+</div>
+<div class="signin-stack"><div class="login" id="signin">
+<h2>Personnel <em>Sign-In</em></h2>
+<p class="access-notice" id="accessNotice">Use your administrator-issued credentials. No public registration is available. Unauthorized access is prohibited.</p><form aria-describedby="accessNotice" id="loginForm" method="post">
+<div class="field">
+<label for="email">Email address</label>
+<input aria-describedby="emailErr" autocomplete="username" id="email" inputmode="email" placeholder="you@company.com" required="" type="email"/>
+<p class="err" id="emailErr" role="alert"></p>
+</div>
+<div class="field">
+<label for="password">Password</label>
+<div class="input-wrap">
+<input aria-describedby="pwErr" autocomplete="current-password" id="password" placeholder="Enter your password" required="" type="password"/>
+<button aria-controls="password" aria-pressed="false" class="toggle-pw" id="togglePw" type="button">Show</button>
+</div>
+<p class="err" id="pwErr" role="alert"></p>
+</div>
+<div class="row">
+<label><input id="remember" name="remember" type="checkbox"/> Keep me signed in</label>
+<button class="link-btn" id="forgot" type="button">Forgot password?</button>
+</div>
+<button class="btn" id="submitBtn" type="submit">Personnel sign-in</button>
+<p aria-live="polite" class="status" id="status" role="status"></p>
+</form>
+</div>
+<section aria-labelledby="adminSigninTitle" class="login admin-login" id="administratorSignin"><span class="admin-badge">ADMINISTRATOR ACCESS</span><h2 id="adminSigninTitle">Administrator <em>Sign-In</em></h2><p class="access-notice" id="adminAccessNotice">Separate sign-in for approved TSEGroup CGL administrators. Personnel and staff accounts cannot enter through this form.</p><form aria-describedby="adminAccessNotice" id="adminLoginForm" method="post"><div class="field"><label for="adminEmail">Administrator email</label><input autocomplete="username" id="adminEmail" placeholder="Administrator email address" required="" type="email"/></div><div class="field"><label for="adminPassword">Administrator password</label><div class="input-wrap"><input autocomplete="current-password" id="adminPassword" placeholder="Enter your administrator password" required="" type="password"/><button aria-controls="adminPassword" aria-pressed="false" class="toggle-pw" id="adminTogglePw" type="button">Show</button></div></div><div class="row"><label><input id="adminRemember" type="checkbox"/> Keep me signed in</label><button class="link-btn" id="adminForgot" type="button">Forgot password?</button></div><button class="btn" id="adminSubmitBtn" type="submit">Administrator sign-in</button><p aria-live="polite" class="status" id="adminLoginStatus" role="status"></p></form></section>
+</div>
+</div>
+</main>
+<footer class="site">
+<div class="wrap">
+<div class="foot-grid">
+<div class="foot-col"><span class="wordmark">TSEGroup <em>CGL</em></span></div>
+<div class="foot-col">
+<h3>Explore</h3>
+<ul>
+<li><a href="https://tsegroup.world/#mission">Our Mission</a></li>
+<li><a href="https://tsegroup.world/#headquarters">Headquarters</a></li>
+<li><a href="https://tsegroup.world/#impact">The Impact</a></li>
+<li><a href="https://tsegroup.world/#community">Community</a></li>
+<li><a href="https://tsegroup.world/#contact">Contact</a></li>
+</ul>
+</div>
+<div class="foot-col">
+<h3>Legal</h3>
+<ul>
+<li><a data-legal="privacy" href="#privacy">Privacy Policy</a></li>
+<li><a data-legal="terms" href="#terms">Terms of Service</a></li>
+<li><a data-legal="ip" href="#ip">Intellectual Property</a></li>
+<li><a href="mailto:hello@tsegroup.world">Email Us</a></li>
+</ul>
+</div>
+</div>
+<div class="foot-base">© <span id="year">2026</span> TSEGroup CGL. All rights reserved.</div>
+</div>
+</footer>
+<div class="browser-recovery"><p>Having trouble signing in on this browser?</p><button class="link-btn" id="resetBrowserSignIn" type="button">Reset browser sign-in</button><small>Clears only this portal’s saved sign-in. It does not delete accounts, messages, or permissions.</small></div><p class="portal-build">Portal interface · 14 October 2026 · welcome &amp; access review</p></div>
+<!-- ================= PORTAL VIEW ================= -->
+<div class="view" hidden="" id="viewPortal">
+<header class="site">
+<div class="wrap bar">
+<span class="wordmark">TSEGroup <em>CGL</em></span>
+<button class="pill" id="signOut" type="button">Sign out</button>
+</div>
+</header>
+<div class="portal">
+<p class="workspace-kicker" id="portalRole">Secure business communication</p><h2>Your communication workspace</h2>
+<div class="welcome-layout"><section aria-labelledby="welcomeHeading" class="portal-welcome"><p class="eyebrow">PRIVATE · BUSINESS USE ONLY</p>
+<h3 id="welcomeHeading">Welcome to the TSEGroup CGL Communication Portal</h3>
+<p>This portal is a dedicated space for authorized personnel to receive official communications, stay informed, and conduct company business professionally.</p>
+<p>Messages are private communications intended only for their designated recipients. The portal is designed to restrict access to each message to its intended recipients, subject to authorized system administration and applicable legal requirements.</p>
+<p>Your sign-in information is private and must not be shared with anyone. Use only your own authorized account. If misuse of your account or the portal is detected, your access will be revoked.</p>
+<p>Whether communicating with the Office of the CEO, administration, leadership, or colleagues, treat everyone with dignity, courtesy, and respect. Keep communications professional, constructive, accurate, and relevant to company business. Harassment, discrimination, threats, abusive language, and inappropriate personal content are not acceptable.</p>
+<p>Thank you for helping maintain a secure, respectful, and trustworthy communication environment.</p>
+
+</section><div aria-labelledby="confidentialityHeading" class="portal-confidentiality">
+<h4 id="confidentialityHeading">Confidentiality, Privacy, and Responsible Use</h4>
+<p>Communications and attachments shared through this portal are intended solely for their authorized recipients and legitimate TSEGroup CGL business purposes.</p>
+<p>Do not access communications that are not intended for you. Do not forward, copy, screenshot, publish, distribute, or use confidential information outside authorized business activities without appropriate authorization, except where disclosure is required or protected by law.</p>
+<p>Respect the privacy, dignity, and rights of others. Do not use this portal for harassment, discrimination, threats, personal disputes, unauthorized solicitation, or other inappropriate or non-business purposes.</p>
+<p>If you receive a message in error or notice a privacy or security concern, notify the administrator promptly and do not further share or use its contents.</p>
+<p>Your sign-in information is private and must not be shared with anyone. Use only your own authorized account. If misuse of your account or the portal is detected, your access will be revoked.</p>
+<p>Sign out when using a shared device. Use this portal in accordance with company policies and applicable law. Nothing in this notice restricts lawful reporting of concerns or other legally protected activity.</p>
+</div></div>
+<div class="portal-workspace"><div aria-label="Portal" class="tabs" role="tablist">
+<button aria-controls="panelInbox" aria-selected="true" class="tab" id="tabInbox" role="tab">Inbox<span class="count" hidden="" id="unreadCount">0</span></button>
+<button aria-controls="panelSend" aria-selected="false" class="tab" hidden="" id="tabSend" role="tab">Messaging</button>
+<button aria-controls="panelAdmin" aria-selected="false" class="tab" hidden="" id="tabAdmin" role="tab">People &amp; permissions</button>
+<button aria-controls="panelSent" aria-selected="false" class="tab" hidden="" id="tabSent" role="tab">Sent</button>
+      <button aria-controls="panelAccount" aria-selected="false" class="tab" id="tabAccount" role="tab">Account security</button>
+</div><main class="workspace-content"><section aria-labelledby="tabSent" hidden="" id="panelSent" role="tabpanel"><h3 class="panel-title">Messages you sent</h3><button class="link-btn" id="refreshSent" type="button">Refresh sent history</button><p class="status" id="sentStatus" role="status"></p><div aria-live="polite" class="messages" id="sentMessages"></div><button class="pill" hidden="" id="loadMoreSent" type="button">Load older sent messages</button></section>
+      <section aria-labelledby="tabInbox" id="panelInbox" role="tabpanel"><h3 class="panel-title">Your private inbox</h3>
+<div class="quick-start"><strong>Quick start</strong><p>To send a message, open <strong>Messaging</strong>, select your permitted recipients, enter your message, optionally attach files, and select <strong>Send message</strong>. In <strong>Inbox</strong>, you can mark a message as read, save it, or delete it from your mailbox.</p></div>
+<button class="link-btn" id="refreshInbox" type="button">Refresh inbox</button><p class="status" id="inboxStatus" role="status"></p><div aria-live="polite" class="messages" id="messages"></div><button class="pill" hidden="" id="loadMore" type="button">Load older messages</button>
+</section><section aria-labelledby="tabSend" hidden="" id="panelSend" role="tabpanel"><h3 class="panel-title">Compose a business message</h3>
+<p id="senderIdentity" role="status">Sender label: TSEGroup CGL</p>
+<button class="link-btn" id="retryMessaging" type="button">Retry messaging access</button>
+<p id="messagingRules">Recipients are limited by your approved messaging permissions.</p>
+<button class="pill" hidden="" id="messageCeo" type="button">Message the CEO</button>
+<p hidden="" id="ceoSelection" role="status"></p>
+<p class="message-confidentiality">Confidential — Business Use Only. Each message displays the confidentiality notice below its contents. Keep your message professional and respectful.</p>
+<span class="label" id="toLabel">Send to</span>
+<div aria-labelledby="toLabel" class="recips" role="group">
+<label for="recipGroup">Recipient group</label>
+<select class="search" id="recipGroup"><option value="">All personnel</option><option value="executives">Executives</option><option value="leadership">Leadership</option><option value="temporary_staff">Temporary Staff</option></select>
+<p>Group filters show matching people. Use Select all shown to select them. Selections remain when you change filters; use Clear selected to start again.</p>
+<input aria-label="Search recipients" class="search" id="recipSearch" placeholder="Search by name or designation" type="search"/>
+<div aria-label="Scrollable recipient list" class="recip-list" id="recipList" tabindex="0"></div>
+<div class="recip-tools">
+<span id="recipCount">0 selected</span>
+<button class="link-btn" id="selectAll" type="button">Select all shown</button>
+</div>
+</div>
+<div class="field">
+<label for="body">Message</label>
+<textarea id="body" maxlength="5000" placeholder="Write your message"></textarea>
+</div>
+<p class="small" id="charCount">0 / 5000 characters</p>
+<div class="attachments" hidden><p class="small">File attachments are temporarily unavailable while their message integration is corrected.</p><label class="label" for="attachmentInput">Attachments</label><input id="attachmentInput" type="file" multiple accept="image/jpeg,image/png,image/webp,application/pdf,text/plain,text/csv,.docx,.xlsx,.pptx"/><p class="small">Up to 5 files; each may be up to 20 MB. Files are stored privately and can be downloaded only by an authorized recipient.</p><div id="attachmentList" aria-live="polite"></div></div><button class="link-btn" id="clearSelected" type="button">Clear selection</button><div class="compose-actions"><button class="btn" id="sendBtn" type="button">Send message</button></div>
+<p aria-live="polite" class="status" id="sendStatus" role="status"></p>
+</section><section aria-labelledby="tabAdmin" hidden="" id="panelAdmin" role="tabpanel"><h3 class="panel-title">People &amp; permissions</h3>
+<h3>Authorized personnel administration</h3><p>Create accounts only for approved personnel. Administrators can change roles and suspend access.</p>
+<form id="createForm" method="post">
+<div class="field"><label for="newEmail">Personnel email</label><input autocomplete="off" id="newEmail" required="" type="email"/></div>
+<div class="field"><label for="newPassword">Temporary password (12–256 characters)</label><input autocomplete="new-password" id="newPassword" maxlength="256" minlength="12" required="" type="password"/></div>
+<div class="field"><label for="newRole">Authorized role</label><select id="newRole"><option value="member">Personnel — approved contacts only</option><option value="staff">Staff — inbox and sending</option><option value="admin">Administrator — accounts and sending</option></select></div>
+<label><input id="approveCreation" required="" type="checkbox"/> I confirm this person is authorized to access this portal.</label>
+<button class="btn" id="createBtn" style="margin-top:1rem">Create approved account</button>
+</form><div class="temp-password" hidden="" id="tempPasswordPanel"><p><strong>Temporary password</strong></p><p class="mono" id="tempPasswordValue"></p><button class="link-btn" id="hideTempPassword" type="button">Hide now</button><p class="small">Shown only until hidden, leaving this page, or signing out. It cannot be retrieved later; issue a new one if needed.</p></div><p class="status" id="adminStatus" role="status"></p>
+<label class="label" for="userSearch">Search personnel</label><input class="search" id="userSearch" placeholder="Search by name, designation, or account email" type="search"/>
+<button class="link-btn" id="refreshUsers" type="button">Refresh personnel</button><p class="status">Expand a row’s editing controls to change settings. On smaller screens, scroll the list horizontally.</p><div aria-label="Scrollable account and permissions list" class="messages" id="userList" tabindex="0"></div>
+</section><section aria-labelledby="tabAccount" hidden="" id="panelAccount" role="tabpanel"><h3 class="panel-title">Account security</h3>
+<h3>Your account</h3><p id="accountEmail"></p><form id="accountForm" method="post">
+<div class="field"><label for="currentPassword">Current password</label><input autocomplete="current-password" id="currentPassword" required="" type="password"/></div>
+<div class="field"><label for="accountPassword">New password (12–256 characters)</label><input autocomplete="new-password" id="accountPassword" maxlength="256" minlength="12" required="" type="password"/></div>
+<div class="field"><label for="confirmPassword">Confirm new password</label><input autocomplete="new-password" id="confirmPassword" maxlength="256" minlength="12" required="" type="password"/></div>
+<button class="btn" id="accountBtn">Change password</button></form><p class="status" id="accountStatus" role="status"></p>
+</section></main></div>
+
+
+
+
+</div>
+</div>
+<dialog aria-labelledby="recoveryTitle" id="recoveryDialog"><h2 id="recoveryTitle">Set a new password</h2>
+<form id="recoveryForm" method="post"><div class="field"><label for="recoveryPassword">New password (12–256 characters)</label><input autocomplete="new-password" id="recoveryPassword" maxlength="256" minlength="12" required="" type="password"/></div>
+<div class="field"><label for="recoveryConfirm">Confirm new password</label><input autocomplete="new-password" id="recoveryConfirm" maxlength="256" minlength="12" required="" type="password"/></div><button class="btn" id="recoveryBtn">Save password</button></form><button class="link-btn" id="cancelRecovery" type="button">Cancel and sign out</button><p class="status" id="recoveryStatus" role="status"></p></dialog>
+<dialog aria-labelledby="legalTitle" id="legalDialog"><h2 id="legalTitle"></h2><div id="legalText"></div><button class="pill" id="closeLegal" type="button">Close</button></dialog>
+<noscript><p>JavaScript is required for secure sign-in and private messaging.</p></noscript>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+"use strict";
+(() => {
+const SUPABASE_URL = "https://dvxzaifefbffqnrbofmx.supabase.co";
+const SUPABASE_PUBLIC_KEY = "sb_publishable_DIUB8L6PtB7UcK95-fjOkQ_qYNL3Q7K"; 
+const SUPPORT_EMAIL = "hello@tsegroup.world";
+// Never enter a secret key, service_role key, database password or SMTP password here.
+// ================================================================
+const $=id=>document.getElementById(id);
+const status=(id,text,kind='')=>{const e=$(id);e.textContent=text;e.className='status '+kind;};
+const node=(tag,text,cls)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;};
+const destination=()=>location.origin+location.pathname;
+const uuid=()=>crypto.randomUUID?crypto.randomUUID():'10000000-1000-4000-8000-100000000000'.replace(/[018]/g,c=>(Number(c)^crypto.getRandomValues(new Uint8Array(1))[0]&15>>Number(c)/4).toString(16));
+let sb=null,user=null,role='member',timer=null,version=0,opening=false,loading=false,page=0,messages=[],recipients=[],people=[],selected=new Set(),deliveryId=null;
+let messagingContext={is_ceo:false,may_contact_ceo:false},ceoContact=null,attachments=[],sent=[],sentPage=0,sentLoading=false;
+let authBusy=false,accessRefreshing=false;
+let recovery=location.hash.includes('type=recovery'),booting=true;
+const memory=new Map();let remember=false;
+try{remember=localStorage.getItem('tse-remember')==='1';$('remember').checked=remember;}catch{}
+const storage={
+ getItem(k){try{return(remember?localStorage:sessionStorage).getItem(k)||memory.get(k)||null;}catch{return memory.get(k)||null;}},
+ setItem(k,v){memory.set(k,v);try{(remember?localStorage:sessionStorage).setItem(k,v);(remember?sessionStorage:localStorage).removeItem(k);}catch{}},
+ removeItem(k){for(const getStore of [()=>localStorage,()=>sessionStorage]){try{getStore().removeItem(k);}catch{}}memory.delete(k);}
+};
+$('year').textContent=new Date().getFullYear();
+$('togglePw').onclick=()=>{const show=$('password').type==='password';$('password').type=show?'text':'password';$('togglePw').textContent=show?'Hide':'Show';$('togglePw').setAttribute('aria-pressed',String(show));};
+const legal={privacy:['Portal privacy notice','Authorized personnel only. We store account email addresses, approval/access roles, messages and read timestamps in Supabase. Personnel can read only their own messages. Authorized senders see recipient display names and groups, not recipient email addresses. Administrators manage accounts and can view account emails. CEO-office sending authorization and changes are recorded; each message retains its assigned sender label. Authorized database/project operators can access stored data; this is not end-to-end encryption. Authentication uses browser storage for this tab, or across visits if Keep me signed in is selected. External font and script providers receive browser requests. Access, correction or deletion requests: '+SUPPORT_EMAIL+'.'],terms:['Restricted portal use','Access is limited to authorized TSEGroup CGL personnel with an administrator-created and approved account. Public registration is not permitted. Do not attempt access without authorization. Your sign-in information is private and must not be shared with anyone. Use only your own authorized account. If misuse of your account or the portal is detected, your access will be revoked. Sign out on shared devices. Communications are for authorized company business only; treat others respectfully and do not distribute private messages without authorization, except as required or protected by law. This operational notice requires organizational legal approval before launch.'],ip:['Intellectual property','TSEGroup CGL branding and portal materials remain subject to the rights of their respective owners. Access does not grant permission to redistribute private communications. Third-party software and fonts retain their own licenses.']};
+document.querySelectorAll('[data-legal]').forEach(a=>a.onclick=e=>{e.preventDefault();const x=legal[a.dataset.legal];$('legalTitle').textContent=x[0];$('legalText').textContent=x[1];$('legalDialog').showModal();});$('closeLegal').onclick=()=>$('legalDialog').close();
+// Retain the sealed-portal visual from the supplied design.
+const mq=matchMedia('(max-width:880px)'),tiles=$('tiles');
+function buildTiles(){const cols=mq.matches?6:8,center=mq.matches?3:4;tiles.replaceChildren();const own=node('div',undefined,'tile you');own.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>';tiles.append(own);for(let r=1;r<=2;r++)for(let c=1;c<=cols;c++){if(c===center||c===center+1)continue;const t=node('div',undefined,'tile');t.style.gridColumn=c;t.style.gridRow=r;tiles.append(t);}}
+buildTiles();mq.addEventListener?.('change',buildTiles);
+function tab(name){if(name==='send'&&!user)return;if(name==='admin'&&role!=='admin')return;for(const n of ['inbox','send','admin','account']){const k=n[0].toUpperCase()+n.slice(1);$('tab'+k).setAttribute('aria-selected',String(n===name));$('tab'+k).tabIndex=n===name?0:-1;$('panel'+k).hidden=n!==name;}if(name==='send'&&!$('tabSend').disabled)loadRecipients();if(name==='sent')loadSent();if(name==='admin')loadPeople();}
+for(const name of ['inbox','send','admin','account'])$('tab'+name[0].toUpperCase()+name.slice(1)).onclick=()=>tab(name);
+document.querySelector('.tabs').onkeydown=e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;const tabs=[...document.querySelectorAll('.tab')].filter(t=>!t.hidden);let i=tabs.indexOf(document.activeElement);i=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;e.preventDefault();tabs[i].click();tabs[i].focus();};
+function closePortal(){version++;clearInterval(timer);user=null;role='member';messagingContext={is_ceo:false,may_contact_ceo:false};ceoContact=null;messages=[];recipients=[];people=[];selected.clear();deliveryId=null;loading=false;for(const id of ['messages','recipList','userList'])$(id).replaceChildren();$('body').value='';$('recipSearch').value='';$('userSearch').value='';$('charCount').textContent='0 / 5000 characters';$('recipCount').textContent='0 selected';$('unreadCount').hidden=true;$('accountForm').reset();$('createForm').reset();for(const id of ['sendStatus','adminStatus','accountStatus','inboxStatus'])status(id,'');$('messageCeo').hidden=true;$('ceoSelection').hidden=true;$('tabSend').disabled=true;$('portalRole').textContent='Secure business communication';$('viewPortal').hidden=true;$('viewLogin').hidden=false;}
+async function loadAccountProfile(id){
+ const {data,error}=await sb.from('profiles').select('role,approved,suspended,ceo_office_authorized').eq('id',id).single();
+ if(error||!data){const e=Error('Your session could not load its account profile. Retry, or contact the administrator if this persists.');e.transient=true;throw e;}
+ if(!data.approved||data.suspended)throw Error('Access is not approved or has been suspended. Contact your administrator.');
+ return data;
+}
+async function loadMessagingSafely(profile){
+ $('tabSend').disabled=true;
+ try{await refreshMessagingContext();updateSenderPreview(profile);$('tabSend').disabled=false;return true;}
+ catch(e){messagingContext={is_ceo:false,may_contact_ceo:false};ceoContact=null;$('messageCeo').hidden=true;
+  recipients=[];selected.clear();deliveryId=null;$('recipList').replaceChildren();updateRecipientCount();
+  $('senderIdentity').textContent='Messaging permissions could not be loaded. Sending is paused until a successful retry.';
+  status('sendStatus','You are signed in, but messaging permissions are unavailable. Use Retry messaging access.','error');return false;}
+}
+async function openPortal(u,adminOnly=false){
+ if(opening)return;opening=true;const v=++version;
+ try{
+  const data=await loadAccountProfile(u.id);if(v!==version)return;
+  if(adminOnly&&data.role!=='admin')throw Error('Administrator access only. Use Personnel Sign-In for your account.');
+  user=u;role=data.role;$('tabSend').hidden=false;$('tabAdmin').hidden=role!=='admin';
+  $('accountEmail').textContent=u.email+' · '+(role==='member'?'Personnel / temporary access':role==='admin'?'Administrator':'Staff');
+  $('portalRole').textContent=role==='admin'?'Administrator workspace':role==='staff'?'Staff workspace':'Approved-contact workspace';
+  $('viewLogin').hidden=true;$('viewPortal').hidden=false;tab(adminOnly?'admin':'inbox');$('tabSent').hidden=!messagingContext.is_ceo;
+  await loadMessagingSafely(data);if(v!==version)return;
+  if(messagingContext.is_ceo)$('portalRole').textContent='Office of the CEO';
+  await loadMessages();clearInterval(timer);
+  timer=setInterval(()=>{if(user&&!document.hidden&&!loading&&!accessRefreshing)refreshAccess().catch(()=>status('inboxStatus','Connection interrupted. Use Refresh inbox to retry.','error'));},30000);
+ }finally{opening=false;}
+}
+async function refreshAccess(){
+ if(!user||accessRefreshing)return;accessRefreshing=true;const v=version;
+ try{
+  let data;try{data=await loadAccountProfile(user.id);}catch(e){
+   if(v!==version)return;if(e.transient){status('inboxStatus',e.message,'error');return;}
+   try{await sb.auth.signOut({scope:'local'});}finally{closePortal();}status('status','Your access has been withdrawn. Contact an administrator.','error');return;}
+  if(v!==version)return;
+  if(data.role!==role){role=data.role;recipients=[];people=[];selected.clear();$('recipList').replaceChildren();$('userList').replaceChildren();$('tabAdmin').hidden=role!=='admin';tab('inbox');}
+  await loadMessagingSafely(data);if(v!==version)return;await loadMessages();
+ }finally{accessRefreshing=false;}
+}
+$('retryMessaging').onclick=async()=>{if(!user)return;const b=$('retryMessaging');b.disabled=true;try{await refreshAccess();if(!$('tabSend').disabled){status('sendStatus','Messaging access restored.','ok');if(!$('panelSend').hidden)await loadRecipients();}}catch{status('sendStatus','Messaging is still unavailable. Retry later or contact the administrator.','error');}finally{b.disabled=false;}};
+async function loadMessages(more=false){if(!user||loading)return;loading=true;const v=version,next=more?page+1:0;status('inboxStatus','Loading messages…');try{const {data,error}=await sb.from('messages').select('id,body,created_at,read_at,sender_label,saved').order('created_at',{ascending:false}).order('id',{ascending:false}).range(next*50,next*50+49);if(error)throw error;if(v!==version)return;page=next;messages=more?[...messages,...data]:data;renderMessages();$('loadMore').hidden=data.length<50;status('inboxStatus',messages.length+' messages loaded. Unread badge counts loaded messages.');}catch{if(v===version)status('inboxStatus','Unable to load messages. Refresh to retry.','error');}finally{if(v===version)loading=false;}}
+const messageConfidentialityText='This message is intended solely for its designated recipient(s) for authorized TSEGroup CGL business. Respect the privacy of others and keep all communications professional and courteous. Do not disclose or use its contents outside authorized business purposes, except as required or protected by law. If received in error, notify the administrator.';
+function confidentialityFooter(){const f=node('footer',undefined,'message-confidentiality');f.append(node('strong','Confidential — Intended Recipient(s) Only'),node('p',messageConfidentialityText));return f;}
+function renderMessages(){const box=$('messages');box.replaceChildren();let unread=0;if(!messages.length)box.append(node('p','No messages yet.','empty'));for(const m of messages){if(!m.read_at)unread++;const card=node('article',undefined,'msg'+(!m.read_at?' unread':'')),top=node('div',undefined,'msg-top'),time=node('time',new Date(m.created_at).toLocaleString([], {dateStyle:'medium',timeStyle:'short'}));time.dateTime=m.created_at;top.append(node('strong',m.sender_label==='From the Office of the CEO'?'From the Office of the CEO':'TSEGroup CGL'),time);card.append(top,node('p',m.body,'msg-body'));const actions=node('div','message-actions');if(!m.read_at){const b=node('button','Mark as read','link-btn');b.type='button';b.onclick=async()=>{const v=version;b.disabled=true;try{const {error}=await sb.rpc('mark_read',{message_id:m.id});if(error)throw error;if(v===version){m.read_at=new Date().toISOString();renderMessages();}}catch{b.disabled=false;status('inboxStatus','Read status was not updated. Retry.','error');}};actions.append(b);}const save=node('button',m.saved?'Saved':'Save','link-btn');save.type='button';save.disabled=!!m.saved;save.onclick=async()=>{const v=version;save.disabled=true;try{const {error}=await sb.rpc('save_message',{message_id:m.id});if(error)throw error;if(v===version){m.saved=true;renderMessages();}}catch{save.disabled=false;status('inboxStatus','Message could not be saved. Retry.','error');}};const remove=node('button','Delete from my mailbox','link-btn danger-link');remove.type='button';remove.onclick=async()=>{if(!confirm('Delete this message from your mailbox? Other recipients and the sender’s Sent history are not changed.'))return;const v=version;remove.disabled=true;try{const {error}=await sb.rpc('delete_from_mailbox',{message_id:m.id});if(error)throw error;if(v===version){messages=messages.filter(x=>x.id!==m.id);renderMessages();}}catch{remove.disabled=false;status('inboxStatus','Message could not be deleted. Retry.','error');}};actions.append(save,remove);card.append(actions);card.append(confidentialityFooter());box.append(card);}$('unreadCount').textContent=unread;$('unreadCount').hidden=!unread;}
+$('refreshInbox').onclick=()=>refreshAccess().catch(()=>status('inboxStatus','Refresh could not finish. Retry.','error'));$('loadMore').onclick=()=>loadMessages(true);
+async function rpcCall(name,args={}){const {data,error}=await sb.rpc(name,args);if(error)throw error;return data;}
+async function refreshMessagingContext(){
+ const v=version;const context=await rpcCall('portal_messaging_context');if(v!==version)return;
+ messagingContext=context?.[0]||{is_ceo:false,may_contact_ceo:false};
+ const contacts=messagingContext.may_contact_ceo?await rpcCall('portal_ceo_contact'):[];if(v!==version)return;
+ const previous=ceoContact?.id;ceoContact=contacts?.[0]||null;
+ if(previous&&!ceoContact&&selected.delete(previous))deliveryId=null;
+ $('messageCeo').hidden=!ceoContact;
+ $('tabSend').textContent=messagingContext.is_ceo?'CEO messaging':'Send a message';
+ $('messagingRules').textContent=messagingContext.is_ceo
+  ?'Select active recipients to message. Granting permission to message you is a separate action; it is never automatic.'
+  :role==='member'?'You may message only administrator-approved contacts. The separate CEO contact action appears only when she authorizes you.'
+  :role==='staff'?'Staff cannot message Personnel. Access to contact the CEO is granted only by the CEO.'
+  :'The CEO is excluded from the general recipient list. Only she can grant permission to contact her.';
+ updateRecipientCount();
+}
+const allowedTypes=new Set(['image/jpeg','image/png','image/webp','application/pdf','text/plain','text/csv','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.openxmlformats-officedocument.presentationml.presentation']);
+const maxAttachmentBytes=20*1024*1024;
+function renderAttachments(){const box=$('attachmentList');box.replaceChildren();if(!attachments.length){box.append(node('p','No files selected.','small'));return;}for(const item of attachments){const row=node('div','attachment-item');row.append(node('span',item.file.name+' · '+Math.ceil(item.file.size/1024)+' KB'));const remove=node('button','Remove','link-btn');remove.type='button';remove.onclick=()=>{attachments=attachments.filter(x=>x!==item);renderAttachments();};row.append(remove);box.append(row);}}
+$('attachmentInput').onchange=()=>{const files=[...($('attachmentInput').files||[])];for(const file of files){if(attachments.length>=5){status('sendStatus','Use up to 5 attachments per message.','error');break;}if(file.size>maxAttachmentBytes){status('sendStatus',file.name+' is larger than 20 MB.','error');continue;}if(!allowedTypes.has(file.type)&&!/\.(docx|xlsx|pptx)$/i.test(file.name)){status('sendStatus',file.name+' is not an allowed file type.','error');continue;}attachments.push({file,uploaded:false,storage_path:null});}renderAttachments();$('attachmentInput').value='';};
+$('hideTempPassword').onclick=()=>{$('tempPasswordPanel').hidden=true;$('tempPasswordValue').textContent='';};
+function showTemporaryPassword(value){$('tempPasswordPanel').hidden=false;$('tempPasswordValue').textContent=value;}
+async function sendAttachmentsForDelivery(deliveryId){for(const item of attachments){const path=deliveryId+'/'+crypto.randomUUID()+'/'+item.file.name.replace(/[^\w.\-]+/g,'_');const {error}=await sb.storage.from('portal-attachments').upload(path,item.file,{contentType:item.file.type||'application/octet-stream',upsert:false});if(error)throw error;item.storage_path=path;item.uploaded=true;const {error:attachError}=await sb.rpc('attach_message_file',{delivery_id:deliveryId,storage_path:path,file_name:item.file.name,mime_type:item.file.type||'application/octet-stream',byte_size:item.file.size});if(attachError)throw attachError;}}
+async function loadSent(more=false){status('sentStatus','Sent history is temporarily unavailable while its integration is corrected. Your received Inbox remains available.','error');return;if(!user||sentLoading||!messagingContext.is_ceo)return;sentLoading=true;const v=version,next=more?sentPage+1:0;status('sentStatus','Loading sent history…');try{const {data,error}=await sb.from('sent_messages').select('id,body,created_at').order('created_at',{ascending:false}).range(next*50,next*50+49);if(error)throw error;if(v!==version)return;sentPage=next;sent=more?[...sent,...data]:data;renderSent();$('loadMoreSent').hidden=data.length<50;status('sentStatus',sent.length+' sent messages loaded.');}catch{if(v===version)status('sentStatus','Unable to load sent history. Refresh to retry.','error');}finally{if(v===version)sentLoading=false;}}
+function renderSent(){const box=$('sentMessages');box.replaceChildren();if(!sent.length){box.append(node('p','No sent messages yet.','empty'));return;}for(const m of sent){const card=node('article',undefined,'msg'),top=node('div','msg-top'),time=node('time',new Date(m.created_at).toLocaleString([], {dateStyle:'medium',timeStyle:'short'}));time.dateTime=m.created_at;top.append(node('strong','From the Office of the CEO'),time);card.append(top,node('p',m.body,'msg-body'));if(m.attachments?.length){const list=node('div','attachment-list');for(const a of m.attachments){const item=node('div','attachment-item');item.append(node('span',a.file_name||'Attachment'));const dl=node('button','Download','link-btn');dl.type='button';dl.onclick=async()=>{dl.disabled=true;try{const {data,error}=await sb.rpc('attachment_download_url',{attachment_id:a.id});if(error)throw error;window.open(data.url,'_blank','noopener');}catch{status('sentStatus','Attachment could not be authorized. Retry.','error');}finally{dl.disabled=false;}};item.append(dl);list.append(item);}card.append(list);}const remove=node('button','Delete from my Sent history','link-btn danger-link');remove.type='button';remove.onclick=async()=>{if(!confirm('Remove this message from your Sent history? It does not delete recipients’ copies.'))return;remove.disabled=true;try{const {error}=await sb.rpc('delete_sent_history',{sent_id:m.id});if(error)throw error;sent=sent.filter(x=>x.id!==m.id);renderSent();}catch{remove.disabled=false;status('sentStatus','Sent history could not be changed. Retry.','error');}};card.append(remove);box.append(card);}}
+$('refreshSent').onclick=()=>loadSent().catch(()=>status('sentStatus','Sent history could not be refreshed. Retry.','error'));
+$('loadMoreSent').onclick=()=>loadSent(true);
+function updateRecipientCount(){
+ $('recipCount').textContent=selected.size+' selected';
+ const included=ceoContact&&selected.has(ceoContact.id);$('ceoSelection').hidden=!included;
+ $('ceoSelection').textContent=included?'Office of the CEO is selected through her separately authorized contact action.':'';
+}
+$('messageCeo').onclick=()=>{if(!ceoContact)return;selected.clear();selected.add(ceoContact.id);deliveryId=null;renderRecipients();$('body').focus();};
+async function loadRecipients(){const v=version;try{
+ await refreshMessagingContext();if(v!==version)return;
+ const all=[];const name=messagingContext.is_ceo?'ceo_permission_directory':'portal_recipient_directory';
+ for(let offset=0;offset<100000;offset+=100){
+  const batch=await rpcCall(name,{page_start:offset,page_size:100});if(v!==version)return;
+  all.push(...(batch||[]));if(!batch||batch.length<100)break;
+  if(offset===99900)throw Error('Directory exceeds the supported list size.');
+ }
+ recipients=all;const allowed=new Set(recipients.filter(p=>p.account_active!==false).map(p=>p.id));if(ceoContact)allowed.add(ceoContact.id);
+ const next=new Set([...selected].filter(id=>allowed.has(id)));if(next.size!==selected.size)deliveryId=null;selected=next;
+ renderRecipients();status('sendStatus',recipients.length?'Recipient list loaded.':'No approved contacts are available. Contact your administrator through your established business channel.');
+}catch(e){if(v===version)status('sendStatus',e.message||'Recipient list unavailable.','error');}}
+const groupLabels={executives:'Executives',leadership:'Leadership',temporary_staff:'Temporary Staff'};
+const shownRecipients=()=>recipients.filter(p=>((p.display_name||'')+' '+(p.designation||'')).toLowerCase().includes($('recipSearch').value.trim().toLowerCase())&&(!$('recipGroup').value||(p.recipient_groups||[]).includes($('recipGroup').value)));
+$('recipGroup').onchange=renderRecipients;
+function listTable(headers){const table=node('table',undefined,'portal-list'),head=node('thead'),row=node('tr'),body=node('tbody');
+ for(const text of headers){const th=node('th',text);th.scope='col';row.append(th);}head.append(row);table.append(head,body);return {table,body};}
+function cell(text){return node('td',text);}
+async function changeIncomingPermission(button,p){
+ const permitted=!p.may_message_ceo;if(!confirm((permitted?'Allow ':'Revoke permission for ')+p.display_name+' to message you?'))return;
+ button.disabled=true;try{await rpcCall('ceo_set_incoming_permission',{target_id:p.id,permitted,operation_id:uuid()});await loadRecipients();}
+ catch(e){status('sendStatus',e.message,'error');}finally{button.disabled=false;}
+}
+function renderRecipients(){const box=$('recipList');box.replaceChildren();const rows=shownRecipients();
+ if(!rows.length){box.append(node('p','No matching approved recipients.','empty'));updateRecipientCount();return;}
+ const headers=['Select','Name','Designation','Groups'];if(messagingContext.is_ceo)headers.push('Access status','May message the CEO');
+ const {table,body}=listTable(headers);
+ for(const p of rows){const row=node('tr'),c=node('input');c.type='checkbox';c.checked=selected.has(p.id);c.disabled=p.account_active===false;c.setAttribute('aria-label','Select '+p.display_name);
+ c.onchange=()=>{c.checked?selected.add(p.id):selected.delete(p.id);deliveryId=null;updateRecipientCount();};const selection=cell();selection.append(c);
+ row.append(selection,cell(p.display_name||'Authorized user'),cell(p.designation||'Not yet assigned'),cell((p.recipient_groups||[]).map(g=>groupLabels[g]||g).join(', ')||'—'));
+ if(messagingContext.is_ceo){row.append(cell(p.account_active===false?'Inactive — sending disabled':'Active'));
+  const permission=cell(),label=node('p',p.may_message_ceo?'Granted':'Not granted'),b=node('button',p.may_message_ceo?'Revoke':'Grant','link-btn');b.type='button';b.disabled=p.account_active===false&&!p.may_message_ceo;b.onclick=()=>changeIncomingPermission(b,p);permission.append(label,b);row.append(permission);}
+ body.append(row);
+ }box.append(table);updateRecipientCount();}
+$('recipSearch').oninput=renderRecipients;
+$('selectAll').onclick=()=>{shownRecipients().filter(p=>p.account_active!==false).forEach(p=>selected.add(p.id));deliveryId=null;renderRecipients();};
+$('clearSelected').onclick=()=>{selected.clear();deliveryId=null;renderRecipients();};
+$('body').oninput=()=>{deliveryId=null;$('charCount').textContent=$('body').value.length+' / 5000 characters';};
+$('sendBtn').onclick=async()=>{const text=$('body').value.trim(),ids=[...selected];if(!text||ids.length<1||ids.length>1000)return status('sendStatus','Write a message and choose 1–1000 authorized recipients.','error');if(!confirm('Send this message to '+ids.length+' authorized recipient(s)?'))return;const v=version,b=$('sendBtn');b.disabled=true;try{deliveryId=deliveryId||uuid();const {data,error}=await sb.rpc('send_message',{recipients:ids,message:text,request_id:deliveryId});if(error)throw error;if(v!==version)return;status('sendStatus','Delivered '+data+' private message copies.','ok');$('body').value='';$('charCount').textContent='0 / 5000 characters';selected.clear();deliveryId=null;renderRecipients();}catch{if(v===version)status('sendStatus','Delivery could not be confirmed. Retry without editing to safely reuse this request.','error');}finally{b.disabled=false;}};
+async function admin(action,args={}){const {data,error}=await sb.functions.invoke('admin-users',{body:{action,...args}});if(error){let msg='Administration request failed. Verify the deployed function and allowed origin.';try{const body=await error.context.json();msg=body.error||msg;}catch{}throw Error(msg);}if(data?.error)throw Error(data.error);return data;}
+function updateSenderPreview(profile){
+  const label=messagingContext.is_ceo||(profile.ceo_office_authorized===true&&['staff','admin'].includes(profile.role))?'From the Office of the CEO':'TSEGroup CGL';
+  $('senderIdentity').textContent='Sender label for new messages: '+label+'. The server assigns the final label when sending.';
+}
+async function changeCeoAuthorization(button,p,authorized){
+  if(!confirm((authorized?'Authorize ':'Revoke CEO-office authorization for ')+p.email+(authorized?' to send messages labelled From the Office of the CEO?':'?')))return;
+  button.disabled=true;
+  try{
+    const {error}=await sb.rpc('admin_set_ceo_authorization',{target_id:p.id,authorized_value:authorized,operation_id:uuid()});
+    if(error)throw error;
+    await loadPeople();
+    status('adminStatus','CEO-office authorization updated. Existing messages keep their original labels.','ok');
+    await refreshAccess();
+  }catch(e){status('adminStatus',e.message||'Authorization update failed.','error');}
+  finally{button.disabled=false;}
+}
+async function loadPeople() {
+  const v = version;
+  status('adminStatus', 'Loading personnel…');
+
+  try {
+    const collected = [];
+    let page = 1;
+
+    while (page !== null) {
+      if (page > 100) {
+        throw Error(
+          'Personnel list exceeds 10,000 entries; a page-navigation UI is required.'
+        );
+      }
+
+      const data = await admin('list', { page, perPage: 100 });
+
+      if (v !== version) return;
+
+      const batch=data.users||[];
+      let authorizations=[];
+      if(batch.length){
+        const result=await sb.rpc('admin_list_ceo_authorizations',{account_ids:batch.map(p=>p.id)});
+        if(result.error)throw result.error;
+        authorizations=result.data||[];
+      }
+      if(v!==version)return;
+      const flags=new Map(authorizations.map(p=>[p.id,p.ceo_office_authorized===true]));
+      const metadata=batch.length?await rpcCall('admin_messaging_metadata',{account_ids:batch.map(p=>p.id)}):[];
+      if(v!==version)return;const extra=new Map((metadata||[]).map(p=>[p.id,p]));
+      collected.push(...batch.map(p=>({...p,...(extra.get(p.id)||{}),ceo_office_authorized:flags.get(p.id)||false})));
+      page = data.next_page ?? null;
+    }
+
+    people = collected;
+    renderPeople();
+    status('adminStatus', 'Personnel list loaded.');
+  } catch (e) {
+    if (v === version) {
+      status('adminStatus', e.message, 'error');
+    }
+  }
+}
+function actionButton(text,fn,disabled=false){const b=node('button',text,'link-btn');b.type='button';b.disabled=disabled;b.onclick=()=>fn(b);return b;}
+async function adminRpcChange(button,name,args,question){if(!confirm(question))return;button.disabled=true;try{await rpcCall(name,{...args,operation_id:uuid()});await loadPeople();status('adminStatus','Settings saved.','ok');}catch(e){status('adminStatus',e.message,'error');}finally{button.disabled=false;}}
+function compactAdminTable(table){
+ for(const row of table.querySelectorAll('tbody tr')){
+  const cells=[...row.children];
+  for(const index of [0,1,2,3,5]){
+   const td=cells[index];if(!td||!td.querySelector('input,select,button'))continue;
+   const details=node('details',undefined,'row-editor');let summaryText='Edit';
+   let movable=[...td.childNodes];
+   if(index===0){summaryText='Edit display name';movable=movable.filter(el=>el.nodeType===1&&['INPUT','BUTTON'].includes(el.tagName));}
+   if(index===1){const input=td.querySelector('input');td.prepend(node('p',input?.value||'Designation not set'));summaryText='Edit designation';}
+   if(index===2){const sel=td.querySelector('select');summaryText=(sel?.selectedOptions[0]?.textContent||'Role')+' · access settings';}
+   if(index===3){summaryText=[...td.querySelectorAll('input:checked')].map(c=>groupLabels[c.value]||c.value).join(', ')||'No groups assigned';}
+   if(index===5){summaryText=td.querySelector('input')?.checked?'Office label authorized':'Office label not authorized';}
+   details.append(node('summary',summaryText));for(const el of movable)details.append(el);td.append(details);
+  }
+ }
+}
+function renderPeople(){const box=$('userList'),q=$('userSearch').value.trim().toLowerCase();box.replaceChildren();
+ const rows=people.filter(p=>[p.email,p.display_name,p.designation].filter(Boolean).join(' ').toLowerCase().includes(q));
+ if(!rows.length){box.append(node('p','No matching accounts.','empty'));return;}
+ const {table,body}=listTable(['Name / account','Designation','Role / access','Recipient groups','Personnel contact permissions','CEO-office label']);
+ for(const p of rows){const row=node('tr'),identity=cell(),designation=cell(),access=cell(),groups=cell(),contacts=cell(),branding=cell();
+ identity.append(node('p',p.display_name||'Name not set'),node('small',p.email||''));
+ const nameInput=node('input');nameInput.type='text';nameInput.maxLength=100;nameInput.value=p.display_name||'';nameInput.setAttribute('aria-label','Display name for '+(p.email||p.id));identity.append(nameInput,
+  actionButton('Save name',b=>changePerson(b,'display_name',{id:p.id,display_name:nameInput.value},'Save this display name?')));
+ const title=node('input');title.type='text';title.maxLength=100;title.value=p.designation||'';title.placeholder='Title or purpose';title.setAttribute('aria-label','Designation for '+(p.display_name||p.email));designation.append(title,
+  actionButton('Save designation',b=>adminRpcChange(b,'admin_set_designation',{target_id:p.id,designation_value:title.value},'Save this designation?')));
+ const self=p.id===user.id,select=node('select');select.setAttribute('aria-label','Role for '+(p.display_name||p.email));
+ for(const [value,label] of [['member','Personnel / vendor / temporary'],['staff','Staff'],['admin','Administrator']]){const o=node('option',label);o.value=value;select.append(o);}select.value=p.role;select.disabled=self;
+ access.append(select,actionButton('Save role',b=>changePerson(b,'role',{id:p.id,role:select.value},'Change role for '+p.email+'?'),self),node('p',(p.approved?'Approved':'Not approved')+(p.suspended?' · Suspended':'')),
+  actionButton(p.approved?'Revoke approval':'Approve',b=>changePerson(b,'approve',{id:p.id,approved:!p.approved},'Change approval for '+p.email+'?'),self),
+  actionButton(p.suspended?'Restore access':'Suspend',b=>changePerson(b,'suspend',{id:p.id,suspended:!p.suspended},'Change suspension for '+p.email+'?'),self),
+  actionButton('Password reset email',async b=>{if(!confirm('Request a reset email for '+p.email+'?'))return;b.disabled=true;try{const {error}=await sb.auth.resetPasswordForEmail(p.email,{redirectTo:destination()});if(error)throw error;status('adminStatus','Password reset requested.','ok');}catch{status('adminStatus','Reset email could not be sent. Check SMTP and rate limits.','error');}finally{b.disabled=false;}}));
+ const checks=[];for(const [value,label] of Object.entries(groupLabels)){const l=node('label'),c=node('input');c.type='checkbox';c.value=value;c.checked=(p.recipient_groups||[]).includes(value);c.disabled=p.role==='admin';l.append(c,node('span',label));groups.append(l);checks.push(c);}
+ groups.append(actionButton('Save groups',b=>changePerson(b,'groups',{id:p.id,recipient_groups:checks.filter(c=>c.checked).map(c=>c.value)},'Save recipient groups?'),p.role==='admin'),node('small','Groups do not grant messaging permission. Clear groups before promotion to Administrator.'));
+ if(p.role==='member'){
+  const details=node('details'),summary=node('summary',(p.contact_ids||[]).length+' approved contacts — edit');details.append(summary);
+  let picked=new Set(p.contact_ids||[]),built=false;
+  details.ontoggle=()=>{if(!details.open||built)return;built=true;const search=node('input'),list=node('div',undefined,'contact-options');search.type='search';search.placeholder='Find contact by name or designation';search.setAttribute('aria-label','Search approved contact choices');
+   const candidates=people.filter(t=>t.id!==p.id&&t.id!== 'd42c895d-0147-41be-b0d9-814eb45c60e4');
+   function draw(){list.replaceChildren();const query=search.value.trim().toLowerCase();for(const t of candidates.filter(t=>[t.display_name,t.designation].filter(Boolean).join(' ').toLowerCase().includes(query))){const active=t.approved&&!t.suspended;if(!active&&!picked.has(t.id))continue;const l=node('label'),c=node('input');c.type='checkbox';c.checked=picked.has(t.id);c.onchange=()=>c.checked?picked.add(t.id):picked.delete(t.id);l.append(c,node('span',(t.display_name||'Authorized user')+' — '+(t.designation||'Designation not set')+(active?'':' (inactive; remove before saving)')));list.append(l);}}
+   search.oninput=draw;details.append(search,list,actionButton('Save approved contacts',b=>adminRpcChange(b,'admin_set_personnel_contacts',{target_id:p.id,contact_ids:[...picked]},'Replace approved contacts for '+(p.display_name||p.email)+'?')),node('small','The CEO is not an option here. Only she grants access to message her.'));draw();};contacts.append(details);
+ }else contacts.append(node('p',p.id==='d42c895d-0147-41be-b0d9-814eb45c60e4'?'CEO: may message all active accounts; controls her own incoming grants.':p.role==='admin'?'Administrator: may message active accounts except the CEO unless she grants access.':'Staff: may message other Staff, not Personnel.'));
+ if(p.id==='d42c895d-0147-41be-b0d9-814eb45c60e4')branding.append(node('p','CEO identity: server assigns the CEO-office label.'));
+ else {const eligible=['staff','admin'].includes(p.role)&&p.approved&&!p.suspended,label=node('label'),check=node('input');check.type='checkbox';check.checked=p.ceo_office_authorized===true;check.disabled=!eligible&&!p.ceo_office_authorized;label.append(check,node('span','Authorized office sender'));branding.append(label,
+  actionButton('Save office label',b=>changeCeoAuthorization(b,p,check.checked),!eligible&&!p.ceo_office_authorized),node('small','Branding only. Does not grant access to contact the CEO or override recipient restrictions.'));}
+ row.append(identity,designation,access,groups,contacts,branding);body.append(row);
+ }compactAdminTable(table);box.append(table);}
+async function changePerson(button,action,args,question){if(!confirm(question))return;button.disabled=true;try{await admin(action,args);await loadPeople();status('adminStatus','Personnel settings updated.','ok');}catch(e){status('adminStatus',e.message,'error');}finally{button.disabled=false;}}
+$('refreshUsers').onclick=loadPeople;$('userSearch').oninput=renderPeople;
+$('createForm').onsubmit=async e=>{e.preventDefault();if(!$('createForm').reportValidity())return;const email=$('newEmail').value.trim();if(!confirm('Create an approved '+$('newRole').value+' account for '+email+'?'))return;$('createBtn').disabled=true;try{await admin('create',{email,password:$('newPassword').value,role:$('newRole').value,approved:true});$('createForm').reset();await loadPeople();status('adminStatus','Approved account created. Share its temporary password through a secure channel; the person can change it under Account.','ok');}catch(e){status('adminStatus',e.message,'error');}finally{$('createBtn').disabled=false;}};
+$('accountForm').onsubmit=async e=>{e.preventDefault();if($('accountPassword').value!==$('confirmPassword').value)return status('accountStatus','New passwords do not match.','error');$('accountBtn').disabled=true;try{const check=await sb.auth.signInWithPassword({email:user.email,password:$('currentPassword').value});if(check.error)throw Error('Current password is incorrect.');const {error}=await sb.auth.updateUser({password:$('accountPassword').value});if(error)throw error;$('accountForm').reset();status('accountStatus','Password updated.','ok');}catch(e){status('accountStatus',e.message,'error');}finally{$('accountBtn').disabled=false;}};
+$('forgot').onclick=async()=>{if(!sb)return status('status','Password recovery is not available yet.','error');if(!$('email').value||!$('email').checkValidity())return status('status','Enter your account email first.','error');$('forgot').disabled=true;try{const {error}=await sb.auth.resetPasswordForEmail($('email').value.trim(),{redirectTo:destination()});if(error)throw error;status('status','If an account exists, a reset email will arrive. Check spam too.');}catch{status('status','Recovery could not be requested. Contact your administrator or retry later.','error');}finally{$('forgot').disabled=false;}};
+function showRecovery(){if(!$('recoveryDialog').open)$('recoveryDialog').showModal();}
+async function endRecovery(){await sb.auth.signOut({scope:'local'});recovery=false;$('recoveryDialog').close();$('recoveryForm').reset();history.replaceState(null,'',location.pathname);closePortal();}
+$('recoveryDialog').addEventListener('cancel',e=>e.preventDefault());$('cancelRecovery').onclick=endRecovery;
+$('recoveryForm').onsubmit=async e=>{e.preventDefault();if($('recoveryPassword').value!==$('recoveryConfirm').value)return status('recoveryStatus','Passwords do not match.','error');$('recoveryBtn').disabled=true;try{const {error}=await sb.auth.updateUser({password:$('recoveryPassword').value});if(error)throw error;await endRecovery();status('status','Password updated. Sign in with your new password.','ok');}catch(e){status('recoveryStatus',e.message,'error');}finally{$('recoveryBtn').disabled=false;}};
+function setSignInBusy(busy){$('submitBtn').disabled=busy;$('adminSubmitBtn').disabled=busy;}
+async function authenticate(event,adminOnly){
+ event.preventDefault();const form=$(adminOnly?'adminLoginForm':'loginForm'),sid=adminOnly?'adminLoginStatus':'status',emailInput=$(adminOnly?'adminEmail':'email'),passwordInput=$(adminOnly?'adminPassword':'password');
+ if(!form.reportValidity())return;if(authBusy)return;
+ if(booting)return status(sid,'Checking the saved session. Please wait, or use Reset browser sign-in if it remains stuck.');
+ if(!sb)return status(sid,'Sign-in is not available. Reload the page or contact the administrator.','error');
+ authBusy=true;booting=true;setSignInBusy(true);status(sid,'Signing in…');
+ try{
+  closePortal();await sb.auth.signOut({scope:'local'});
+  remember=$(adminOnly?'adminRemember':'remember').checked;
+  try{localStorage.setItem('tse-remember',remember?'1':'0');}catch{}
+  const {data,error}=await sb.auth.signInWithPassword({email:emailInput.value.trim(),password:passwordInput.value});
+  if(error||!data?.user)throw Error('Sign-in failed. Check your email and password, or contact the administrator.');
+  passwordInput.value='';await openPortal(data.user,adminOnly);status(sid,'');
+ }catch(e){
+  if(!e.transient){try{await sb.auth.signOut({scope:'local'});}catch{}}
+  closePortal();status(sid,e.message||'Sign-in could not finish. Retry.','error');
+ }finally{authBusy=false;booting=false;setSignInBusy(false);}
+}
+$('loginForm').onsubmit=e=>authenticate(e,false);$('adminLoginForm').onsubmit=e=>authenticate(e,true);
+$('adminTogglePw').onclick=()=>{const input=$('adminPassword'),show=input.type==='password';input.type=show?'text':'password';$('adminTogglePw').textContent=show?'Hide':'Show';$('adminTogglePw').setAttribute('aria-pressed',String(show));};$('adminRemember').checked=remember;
+$('adminForgot').onclick=async()=>{const email=$('adminEmail');if(!sb)return status('adminLoginStatus','Password recovery is not available yet.','error');if(!email.value||!email.checkValidity())return status('adminLoginStatus','Enter your administrator email first.','error');$('adminForgot').disabled=true;try{const {error}=await sb.auth.resetPasswordForEmail(email.value.trim(),{redirectTo:destination()});if(error)throw error;status('adminLoginStatus','If an account exists, a reset email will arrive. Check spam too.');}catch{status('adminLoginStatus','Recovery could not be requested. Contact your administrator or retry later.','error');}finally{$('adminForgot').disabled=false;}};
+$('signOut').onclick=async()=>{try{const {error}=await sb.auth.signOut();if(error)throw error;closePortal();status('status','Signed out.');}catch{status('inboxStatus','Sign-out failed. Retry before leaving this shared device.','error');}};
+function clearBrowserSignIn(){
+ if(!confirm('Clear this portal’s saved sign-in on this browser? You will need to sign in again. This does not change your account or permissions.'))return;
+ try{if(sb)sb.auth.stopAutoRefresh();}catch{}
+ for(const store of [()=>localStorage,()=>sessionStorage]){try{const s=store();for(const k of ['tse-portal-auth','tse-portal-auth-code-verifier','tse-portal-auth-v2','tse-portal-auth-v2-code-verifier','tse-remember'])s.removeItem(k);}catch{}}
+ memory.clear();location.replace(location.pathname);
+}
+$('resetBrowserSignIn').onclick=clearBrowserSignIn;
+async function fetchWithDeadline(input,init={}){
+ const controller=new AbortController(),external=init.signal;
+ const abort=()=>controller.abort();if(external?.aborted)abort();else external?.addEventListener('abort',abort,{once:true});
+ const timeout=setTimeout(abort,25000);
+ try{return await fetch(input,{...init,signal:controller.signal});}
+ finally{clearTimeout(timeout);external?.removeEventListener('abort',abort);}
+}
+if(!SUPABASE_URL||!SUPABASE_PUBLIC_KEY){booting=false;return;}
+if(!window.supabase){booting=false;status('status','The authentication library did not load. Check your connection and reload.','error');return;}
+try{
+ if(SUPABASE_PUBLIC_KEY.startsWith('sb_secret_'))throw Error('Secret keys are forbidden in this public file.');
+ if(SUPABASE_PUBLIC_KEY.split('.').length===3){const payload=JSON.parse(atob(SUPABASE_PUBLIC_KEY.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));if(payload.role==='service_role')throw Error('Service-role keys are forbidden in this public file.');}
+ sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLIC_KEY,{global:{fetch:fetchWithDeadline},auth:{storage,storageKey:'tse-portal-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+ setSignInBusy(true);
+ sb.auth.onAuthStateChange((event,session)=>{
+  if(event==='SIGNED_OUT'&&!authBusy)closePortal();
+  if(event==='PASSWORD_RECOVERY'){recovery=true;setTimeout(showRecovery,0);}
+  if(event==='SIGNED_IN'&&session?.user&&!booting&&!authBusy&&!recovery&&!user&&!opening){
+   setTimeout(()=>openPortal(session.user).catch(e=>{closePortal();status('status',e.message||'Unable to open your account. Retry sign-in.','error');}),0);
+  }
+ });
+ (async()=>{
+  try{
+   const {data,error}=await sb.auth.getSession();if(error)throw error;
+   if(data.session){const verified=await sb.auth.getUser();if(verified.error||!verified.data?.user)throw Error('Your saved sign-in expired. Please sign in again.');
+    if(recovery)showRecovery();else await openPortal(verified.data.user);}
+  }catch(e){
+   if(!e.transient){try{await sb.auth.signOut({scope:'local'});}catch{}}
+   closePortal();status('status',e.message||'Saved-session recovery failed. Sign in again or use Reset browser sign-in.','error');
+  }finally{booting=false;setSignInBusy(false);}
+ })();
+}catch(e){booting=false;setSignInBusy(false);status('status',e.message,'error');}
+
+})();
+
+</script>
+</body></html>
